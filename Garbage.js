@@ -44,8 +44,8 @@ function calcTonsPerShiftHours ()
 		// Accumulate the 'Tons' value
 		tons += collectionData.getValue(dataIndex, 1);
 		
-		var currentDateTime = collectionData.getValue(dataIndex, 0);
-		var previousDateTime = dataIndex == 0 ? currentDateTime : collectionData.getValue(dataIndex - 1, 0);
+		var currentDateTime = collectionData.getValue(dataIndex, 2);
+		var previousDateTime = collectionData.getValue(dataIndex, 0);
 		
 		// Accumulate the elapsed time between the current 'DateTime' value and the previous one,
 		// if the day of the month is the same
@@ -148,11 +148,15 @@ function handleEmployeeResponse(response)
 	for (dataIndex = 0; dataIndex < employeeData.getNumberOfRows(); dataIndex++)
 	{
 		// Create a checkbox for the current employee
-		employeeCheckboxes.innerHTML += "<input type = 'checkbox' id = 'employee" + dataIndex + "'> " + employeeData.getValue(dataIndex, 1) + ", " + employeeData.getValue(dataIndex, 0) + "<br />";
+		employeeCheckboxes.innerHTML += "<input class = 'uiElement' type = 'checkbox' id = 'employee'" + dataIndex + "'> " + employeeData.getValue(dataIndex, 1) + ", " + employeeData.getValue(dataIndex, 0) + "<br />";
 	}
 	
 	// Add an extra break after the last checkbox
 	employeeCheckboxes.innerHTML += "<br />";
+	//Add event handler for on change so UI updates
+	$(".uiElement").change(function() {
+		updateChart();
+	})
 }
 
 //----------------------------------------------------------------------------
@@ -273,7 +277,7 @@ function initializeChart()
 {
 	collectionQuery = new google.visualization.Query("https://www.google.com/fusiontables/gvizdata?tq=");
 	
-	collectionQuery.setQuery("SELECT 'start', 'tons' FROM " + tableId + " ORDER BY 'start'");
+	collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tableId + " ORDER BY 'start'");
 	
 	collectionQuery.send(handleCollectionResponse);
 	
@@ -297,10 +301,14 @@ function updateChart()
 	var minString = min.getFullYear() + "." + (min.getMonth() + 1) + "." + (min.getDate() + 1) + " 00:00:00";
 	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate() + 2) + " 00:00:00";
 	
-	collectionQuery.setQuery("SELECT 'start', 'tons' FROM " + tableId + " WHERE 'start' >= '"
-	+ minString + "' AND 'start' <= '" + maxString + "' ORDER BY 'start'");
-	
-	collectionQuery.send(handleCollectionResponse);
+	try {	
+		collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tableId + " WHERE 'start' >= '"
+			+ minString + "' AND 'start' <= '" + maxString + "' ORDER BY 'start'");
+		collectionQuery.send(handleCollectionResponse);
+	}
+	catch(err) {
+		console.log("Chart not updated");
+	}
 }
 function d3refresh() {
 	var svg = d3.select("#chartDiv");
@@ -375,5 +383,10 @@ function d3Init() {
     		.call(d3.axisBottom(x));
 	    d3.select(".yaxis")
 	        .call(d3.axisLeft(y));
-
 }
+$(document).ready(function() {
+	$(".uiElement").change(function() {
+		updateChart();
+	});
+});
+
