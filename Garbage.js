@@ -1,4 +1,4 @@
-/*	Created by Michael Tingey on 2016-04-01.
+/*Created by Michael Tingey on 2016-04-01.
 	Updated on 2016-05-05.
 	Edited by Jesse Deisinger 07/05/16
 	Copyright © 2016 SUNY New Paltz. All rights reserved. */
@@ -6,6 +6,7 @@
 google.charts.load("current", {packages:['corechart', 'table']});
 google.charts.setOnLoadCallback(initializeChart);
 
+var tableId = "1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ";
 var collectionQuery;
 
 //Visualization DataTable type
@@ -272,7 +273,7 @@ function initializeChart()
 {
 	collectionQuery = new google.visualization.Query("https://www.google.com/fusiontables/gvizdata?tq=");
 	
-	collectionQuery.setQuery("SELECT 'DateTime', 'Tons' FROM 1rc7Pm9ejg15CeLVOM5dC7eu00VJjccGTu6uhksbY ORDER BY 'DateTime'");
+	collectionQuery.setQuery("SELECT 'start', 'tons' FROM " + tableId + " ORDER BY 'start'");
 	
 	collectionQuery.send(handleCollectionResponse);
 	
@@ -293,11 +294,11 @@ function updateChart()
 	max = new Date(document.getElementById("endDate").value);
 	
 	// Set the minString to midnight on minDate and the maxString to midnight on the day after maxDate
-	var minString = min.getFullYear() + "." + (min.getMonth() + 1) + "." + (min.getDate() + 1);
-	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate() + 2);
+	var minString = min.getFullYear() + "." + (min.getMonth() + 1) + "." + (min.getDate() + 1) + " 00:00:00";
+	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate() + 2) + " 00:00:00";
 	
-	collectionQuery.setQuery("SELECT 'DateTime', 'Tons' FROM 1rc7Pm9ejg15CeLVOM5dC7eu00VJjccGTu6uhksbY WHERE 'DateTime' >= '"
-	+ minString + "' AND 'DateTime' <= '" + maxString + "' ORDER BY 'DateTime'");
+	collectionQuery.setQuery("SELECT 'start', 'tons' FROM " + tableId + " WHERE 'start' >= '"
+	+ minString + "' AND 'start' <= '" + maxString + "' ORDER BY 'start'");
 	
 	collectionQuery.send(handleCollectionResponse);
 }
