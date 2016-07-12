@@ -369,13 +369,17 @@ function d3Init() {
 	// Get the data
             var data = collectionData.Lf;	
 	    data.forEach(function(d) {
-		d.date = d.c[0].v;
+		d1 = d.c[0].v;
+		str = String(d1);
+		d.date = Date.parse(str.substring(0,15));
 		d.close = d.c[1].v;
 	    });
 	    // Scale the range of the data
-	    x.domain(d3.extent(data, function(d) { return d.date; }));
+	    x.domain(d3.extent(data, function(d) { 
+		    return d.date 
+	    }));
 	    y.domain([0, d3.max(data, function(d) { return d.close; })]);
-
+	   
 	    // Add the valueline path.
 	    if(optionsSet) {
 	    	var svg = d3.select("body").transition();
@@ -389,14 +393,15 @@ function d3Init() {
 	    // Add the X Axis
 	    svg.append("g")
 		.attr("class", "xaxis")
-		.attr("transform", "translate(0," + height + ")")
+		.attr("transform", "translate(0," + height + ")");
+	    
 
 	    // Add the Y Axis
 	    svg.append("g")
 		.attr("class", "yaxis");
 	    }
 	    d3.select(".xaxis")
-    		.call(d3.axisBottom(x));
+    		.call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
 	    d3.select(".yaxis")
 	        .call(d3.axisLeft(y));
 }
