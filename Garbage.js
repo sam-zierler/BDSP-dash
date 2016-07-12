@@ -326,20 +326,15 @@ function updateChart()
 		console.log("Chart not updated");
 	}
 }
-function d3refresh() {
-	var svg = d3.select("#chartDiv");
-	pWidth = document.getElementById('chartDiv').clientWidth;
-	var margin = {top: 30, right: 20, bottom: 30, left: 50},
-	    width = pWidth - margin.left - margin.right,
-	    height = 460 - margin.top - margin.bottom;
-	svg.attr("width", width);
-	
 
-}
 //Creates table in D3
-function d3Init() { 
+function d3Init() {
+	
+	d3.select(window).on('resize',d3refresh);
+
 	// Set the dimensions of the canvas / graph
 	pWidth = document.getElementById('chartDiv').clientWidth;
+	hWidth = document.getElementById('chartDiv').clientHeight;
 	var margin = {top: 30, right: 20, bottom: 30, left: 50},
 	    width = pWidth - margin.left - margin.right,
 	    height = 460 - margin.top - margin.bottom;
@@ -362,7 +357,11 @@ function d3Init() {
 	    .append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
+		.attr("preserveAspectRatio","xMidYMid meet")
+		.attr("id", "chart")
+	//	.attr("class", "img-responsive")
 	    .append("g")
+	    	.attr("id", "chartArea")
 		.attr("transform", 
 		      "translate(" + margin.left + "," + margin.top + ")");
 
@@ -376,7 +375,7 @@ function d3Init() {
 	    });
 	    // Scale the range of the data
 	    x.domain(d3.extent(data, function(d) { 
-		    return d.date 
+		    return d.date; 
 	    }));
 	    y.domain([0, d3.max(data, function(d) { return d.close; })]);
 	   
@@ -404,6 +403,25 @@ function d3Init() {
     		.call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
 	    d3.select(".yaxis")
 	        .call(d3.axisLeft(y));
+
+	    function d3refresh() {
+		var chart = d3.select("#chartDiv");
+		var width = document.getElementById('chartDiv').clientWidth, 
+		    height = parseInt(d3.select("#chartDiv").style("height"));
+		d3.select("#chart")
+			.attr("width", width);
+		x.range([0, width - margin.left - margin.right]);
+		x.domain(d3.extent(data, function(d) { 
+		    return d.date; 
+		}))
+		chart.select(".xaxis")
+		//	.attr("transform", "translate(0," + height + ")")
+    			.call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
+			
+		chart.selectAll('.line')
+		    .attr("d", valueline(data));
+		console.log("RESIZE");
+	    }
 }
 $(document).ready(function() {
 	$(".uiElement").change(function() {
