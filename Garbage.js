@@ -6,7 +6,22 @@
 google.charts.load("current", {packages:['corechart', 'table']});
 google.charts.setOnLoadCallback(initializeChart);
 
-var tableId = "1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ";
+var tonsTableId, empTableId; 
+
+var xmlHttp = new XMLHttpRequest();
+var url = "garbageData.php";
+
+xmlHttp.onreadystatechange = function() {
+	if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+		var tableArray = JSON.parse(xmlHttp.responseText);
+		tonsTableId = tableArray[0];
+		empTableId = tableArray[1];
+	}
+};
+xmlHttp.open("POST", url, true);
+xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlHttp.send("Test=test");
+
 var collectionQuery;
 
 //Visualization DataTable type
@@ -148,7 +163,9 @@ function handleEmployeeResponse(response)
 	for (dataIndex = 0; dataIndex < employeeData.getNumberOfRows(); dataIndex++)
 	{
 		// Create a checkbox for the current employee
-		employeeCheckboxes.innerHTML += "<input class = 'uiElement' type = 'checkbox' id = 'employee'" + dataIndex + "'> " + employeeData.getValue(dataIndex, 1) + ", " + employeeData.getValue(dataIndex, 0) + "<br />";
+		employeeCheckboxes.innerHTML += "<input class = 'uiElement' type = 'checkbox' id = 'employee'" + 
+			dataIndex + "'> " + employeeData.getValue(dataIndex, 1) + ", " + 
+			employeeData.getValue(dataIndex, 0) + "<br />";
 	}
 	
 	// Add an extra break after the last checkbox
@@ -231,7 +248,7 @@ function initializeOptions()
 	
 	employeeQuery = new google.visualization.Query("https://www.google.com/fusiontables/gvizdata?tq=");
 	
-	employeeQuery.setQuery("SELECT * FROM 1N5MESRSevHsiuQilArUgqb_QDaxCyBk-HhMMh_3f ORDER BY 'LastName'");
+	employeeQuery.setQuery("SELECT * FROM " + empTableId + " ORDER BY 'LastName'");
 	
 	employeeQuery.send(handleEmployeeResponse);
 }
@@ -256,7 +273,6 @@ function handleCollectionResponse(response)
 	
 	d3Init();
 	
-	
 	displaySummaryValues();
 	
 	// If the customization options have not initialized, set them
@@ -277,7 +293,7 @@ function initializeChart()
 {
 	collectionQuery = new google.visualization.Query("https://www.google.com/fusiontables/gvizdata?tq=");
 	
-	collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tableId + " ORDER BY 'start'");
+	collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tonsTableId + " ORDER BY 'start'");
 	
 	collectionQuery.send(handleCollectionResponse);
 	
@@ -302,7 +318,7 @@ function updateChart()
 	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate() + 2) + " 00:00:00";
 	
 	try {	
-		collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tableId + " WHERE 'start' >= '"
+		collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tonsTableId + " WHERE 'start' >= '"
 			+ minString + "' AND 'start' <= '" + maxString + "' ORDER BY 'start'");
 		collectionQuery.send(handleCollectionResponse);
 	}
