@@ -330,42 +330,46 @@ function updateChart()
 //create bar graph
 function barGraphInit() {
 
-	//refresh chart when window size changes
+	// clear chartDiv before the graph is redrawn
 	if(optionsSet) {
 		document.getElementById("chartDiv").innerHTML = "";
 	}
+
+	//
 	d3.select(window).on('resize', barGraphRefresh);
 
 	var margin = {top: 10, right: 30, bottom: 30, left: 30},
 	    width = 640 - margin.left - margin.right,
 	    height = 480 - margin.top - margin.bottom;
 
+	//set x and y scales
 	var x = d3.scaleTime().rangeRound([0, width]);
-
 	var y = d3.scaleLinear()
 		.range([height, 0]);
 
+	//read in and parse data from google charts
 	var data = collectionData.Lf;
 	data.forEach(function(d) {
 		d1 = d.c[0].v;
 		str = String(d1);
 		d.date = new Date(str.substring(0,15));
 		d.close = d.c[1].v;
-	});	
+	});
 
 	x.domain([d3.min(data, function(d) { return d.date; }),
 			d3.max(data, function(d) { return d.date; })])
 		.nice(1);
 
+	//create histogram object which bins google charts data by date
 	var histogram = d3.histogram()
 		.value(function(d) { return d.date; })
 		.domain(x.domain())
 		.thresholds(x.ticks(d3.timeWeek));
 	var bins = histogram(data);
-	console.log(bins);
 
 	y.domain([0, d3.max(bins, function(d) { return totalTons(d); })]);
 
+	//start drawing the graph, starting with enclosing svg tag
 	var svg = d3.select("#chartDiv").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
@@ -403,7 +407,10 @@ function barGraphInit() {
 			}
 			return sum;
 		});
-
+	
+	//math needed to calculate how far over to move the tick labels
+	//in order to center them so that the graph makes sense
+	
 	var xAxisWidth = d3.select("g.axis--x .domain").node().getBBox()["width"];
 	var xAxisTicks = d3.selectAll("g.axis--x g.tick")["_groups"][0].length;
 	var wOffset = (xAxisWidth / xAxisTicks / 2 + 1);
@@ -411,8 +418,8 @@ function barGraphInit() {
 		.attr("transform", function() {
 			return "translate(" + wOffset + ", 0)";
 		});
-
-	//function to resize chart
+	
+	//calculates the total tons collected for each given calendar day
 	function totalTons(d) {
 		var sum = 0;
 		if(d.length > 0) {
@@ -422,6 +429,9 @@ function barGraphInit() {
 		}
 		return sum;
 	}
+
+	//function to resize chart, not used
+	//in favor of just redrawing the whole thing
 
 	function barGraphRefresh() {
 		var rect = d3.selectAll("g.bar");
