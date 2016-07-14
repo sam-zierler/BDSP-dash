@@ -28,7 +28,7 @@ var collectionQuery;
 var collectionData;
 //Visualization DataTable type
 var employeeData;
-
+var bins;
 var optionsSet = false;
 
 //----------------------------------------------------------------------------
@@ -271,7 +271,7 @@ function handleCollectionResponse(response)
 	// D3 chart creation
 	//----------------------------------------------------------------------------
 	
-	d3Init();
+	barGraphInit();
 	
 	displaySummaryValues();
 	
@@ -327,10 +327,109 @@ function updateChart()
 	}
 }
 
-//Creates table in D3
-function d3Init() {
+//create bar graph
+function barGraphInit() {
+
+	//refresh chart when window size changes
+	d3.select(window).on('resize', barGraphRefresh);
+
+	var parseDate = d3.timeParse("%m/%d/%Y %H:%M:%S %p"),
+	    formatCount = d3.format(",.0f");
+
+	var margin = {top: 10, right: 30, bottom: 30, left: 30},
+	    width = 960 - margin.left - margin.right,
+	    height = 500 - margin.top - margin.bottom;
+
+	var x = d3.scaleTime()
+		.domain([new Date(2016, 0, 1), new Date(2017, 0, 1)])
+		.rangeRound([0, width]);
+
+	var y = d3.scaleLinear()
+		.range([height, 0]);
+
+	var histogram = d3.histogram()
+		.value(function(d) { return d.date; })
+		.domain(x.domain())
+		.thresholds(x.ticks(d3.timeWeek));
+
+	var svg = d3.select("body").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	svg.append("g")
+		.attr("class", "axis axis--x")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(x));
+
+	var data = collectionData.Lf;
+	data.forEach(function(d) {
+		d1 = d.c[0].v;
+		str = String(d1);
+		d.date = Date.parse(str.substring(0,15));
+		d.close = d.c[1].v;
+	});
+	var bins = histogram(data);
+	//console.log(bins);
+	y.domain([0, d3.max(bins, function(d) { return d.length; })]);
+
+	var bar = svg.selectAll(".bar")
+		.data(bins)
+		.enter().append("g")
+		.attr("class", "bar")
+		.attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; });
+
+	bar.append("rect")
+		.attr("x", 1)
+		.attr("width", function(d) { return x(d.x1) - x(d.x0) - 1; })
+		.attr("height", function(d) { return height - y(d.length); });
+
+	bar.append("text")
+		.attr("dy", ".75em")
+		.attr("y", 6)
+		.attr("x", function(d) { return (x(d.x1) - x(d.x0)) / 2; })
+		.attr("text-anchor", "middle")
+		.text(function(d) {
+			var sum = 0;
+			if(d.length > 0) {
+				for(i=0; i < d.length; i++) {
+					sum += d[i].close;
+				}
+			}
+			return sum;
+		});
+
+	//function to resize chart
 	
-	d3.select(window).on('resize',d3refresh);
+	function barGraphRefresh() {
+	/*
+		var chart = d3.select("#chartDiv");
+		var width = document.getElementById('chartDiv').clientWidth, 
+		    height = parseInt(d3.select("#chartDiv").style("height"));
+		d3.select("#chart")
+			.attr("width", width);
+		x.range([0, width - margin.left - margin.right]);
+		x.domain(d3.extent(data, function(d) { 
+			return d.date; 
+		}))
+		chart.select(".xaxis")
+			.call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
+
+		chart.selectAll('.line')
+			.attr("d", valueline(data));
+		console.log("RESIZE");
+	*/
+	}
+	
+}
+
+
+//Creates line graph in D3
+function chartInit() {
+	
+	//refresh chart when window size changes
+	d3.select(window).on('resize',chartRefresh);
 
 	// Set the dimensions of the canvas / graph
 	pWidth = document.getElementById('chartDiv').clientWidth;
@@ -359,7 +458,6 @@ function d3Init() {
 		.attr("height", height + margin.top + margin.bottom)
 		.attr("preserveAspectRatio","xMidYMid meet")
 		.attr("id", "chart")
-	//	.attr("class", "img-responsive")
 	    .append("g")
 	    	.attr("id", "chartArea")
 		.attr("transform", 
@@ -404,7 +502,8 @@ function d3Init() {
 	    d3.select(".yaxis")
 	        .call(d3.axisLeft(y));
 
-	    function d3refresh() {
+	    //function to resize chart
+	    function chartRefresh() {
 		var chart = d3.select("#chartDiv");
 		var width = document.getElementById('chartDiv').clientWidth, 
 		    height = parseInt(d3.select("#chartDiv").style("height"));
@@ -415,7 +514,6 @@ function d3Init() {
 		    return d.date; 
 		}))
 		chart.select(".xaxis")
-		//	.attr("transform", "translate(0," + height + ")")
     			.call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
 			
 		chart.selectAll('.line')
