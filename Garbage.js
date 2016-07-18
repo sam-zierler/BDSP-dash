@@ -31,6 +31,58 @@ var employeeData;
 var bins;
 var optionsSet = false;
 
+function getDateRange() {
+	min = new Date(document.getElementById("startDate").value).addDays(1);
+	max = new Date(document.getElementById("endDate").value).addDays(2);
+
+	// Set the minString to midnight on minDate and the maxString to midnight on the day after maxDate
+	var minString = min.getFullYear() + "." + (min.getMonth() + 1) + "." + (min.getDate()) + " 00:00:00";
+	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate()) + " 00:00:00";
+	return [minString, maxString];
+}
+function setPickerDates() {
+		var minDate = collectionData.getValue(0, 0);
+	var maxDate = collectionData.getValue(collectionData.getNumberOfRows() - 1, 0);
+	
+	var minDateMonth;
+	var maxDateMonth;
+	var minDateDay;
+	var maxDateDay;
+	
+	var minDateISO;
+	var maxDateISO;
+	
+	// Store the month and day values of the min and max dates
+	minDateMonth = minDate.getMonth() + 1;
+	maxDateMonth = maxDate.getMonth() + 1;
+	minDateDay = minDate.getDate();
+	maxDateDay = maxDate.getDate();
+	
+	// Ensure the month and day values are 2 digits.
+	if (minDateMonth < 10)
+		minDateMonth = "0" + minDateMonth;
+	if (maxDateMonth < 10)
+		maxDateMonth = "0" + maxDateMonth;
+	if (minDateDay < 10)
+		minDateDay = "0" + minDateDay;
+	if (maxDateDay < 10)
+		maxDateDay = "0" + maxDateDay;
+	
+	// Generate the ISO strings (YYYY-MM-DD) for the min and max dates
+	minDateISO = minDate.getFullYear() + "-" + minDateMonth + "-" + minDateDay;
+	maxDateISO = maxDate.getFullYear() + "-" + maxDateMonth + "-" + maxDateDay;
+	
+	// Set the proper attributes for the input fields
+	document.getElementById("startDate").min = minDateISO;
+	document.getElementById("startDate").max = maxDateISO;
+	document.getElementById("startDate").value = minDateISO;
+	document.getElementById("endDate").min = minDateISO;
+	document.getElementById("endDate").max = maxDateISO;
+	document.getElementById("endDate").value = maxDateISO;
+	document.getElementById("tippingFee").min = 0;
+	document.getElementById("tippingFee").defaultValue = 0
+}
+
 //----------------------------------------------------------------------------
 // Unpack google DataTable to an array
 //----------------------------------------------------------------------------
@@ -152,28 +204,28 @@ function handleEmployeeResponse(response)
 	if (response.isError())
 	{
 		alert("Error in employee query: " + response.getMessage() + " " + response.getDetailedMessage());
-		
-		return;
 	}
-	
-	employeeData = response.getDataTable();
-	var employeeCheckboxes = document.getElementById("employeeCheckboxes");
-	
-	// For each row of data,
-	for (dataIndex = 0; dataIndex < employeeData.getNumberOfRows(); dataIndex++)
-	{
-		// Create a checkbox for the current employee
-		employeeCheckboxes.innerHTML += "<input class = 'uiElement' type = 'checkbox' id = 'employee'" + 
-			dataIndex + "'> " + employeeData.getValue(dataIndex, 1) + ", " + 
-			employeeData.getValue(dataIndex, 0) + "<br />";
+	else {
+		employeeData = response.getDataTable();
+		var employeeCheckboxes = document.getElementById("employeeCheckboxes");
+
+		// For each row of data,
+		for (dataIndex = 0; dataIndex < employeeData.getNumberOfRows(); dataIndex++)
+		{
+			// Create a checkbox for the current employee
+			employeeCheckboxes.innerHTML += "<input class = 'uiElement' type = 'checkbox' id = 'employee'" + 
+				dataIndex + "'> " + employeeData.getValue(dataIndex, 1) + ", " + 
+				employeeData.getValue(dataIndex, 0) + "<br />";
+		}
+
+		// Add an extra break after the last checkbox
+		employeeCheckboxes.innerHTML += "<br />";
+		//Add event handler for on change so UI updates
+		$(".uiElement").change(function() {
+			updateChart();
+		})
 	}
-	
-	// Add an extra break after the last checkbox
-	employeeCheckboxes.innerHTML += "<br />";
-	//Add event handler for on change so UI updates
-	$(".uiElement").change(function() {
-		updateChart();
-	})
+	return 0;
 }
 
 //----------------------------------------------------------------------------
@@ -200,46 +252,7 @@ function initializeOptions()
 	//-------------------------------------------------------------------------
 	// Initialize the customization div.
 	//-------------------------------------------------------------------------
-	var minDate = collectionData.getValue(0, 0);
-	var maxDate = collectionData.getValue(collectionData.getNumberOfRows() - 1, 0);
-	
-	var minDateMonth;
-	var maxDateMonth;
-	var minDateDay;
-	var maxDateDay;
-	
-	var minDateISO;
-	var maxDateISO;
-	
-	// Store the month and day values of the min and max dates
-	minDateMonth = minDate.getMonth() + 1;
-	maxDateMonth = maxDate.getMonth() + 1;
-	minDateDay = minDate.getDate();
-	maxDateDay = maxDate.getDate();
-	
-	// Ensure the month and day values are 2 digits.
-	if (minDateMonth < 10)
-		minDateMonth = "0" + minDateMonth;
-	if (maxDateMonth < 10)
-		maxDateMonth = "0" + maxDateMonth;
-	if (minDateDay < 10)
-		minDateDay = "0" + minDateDay;
-	if (maxDateDay < 10)
-		maxDateDay = "0" + maxDateDay;
-	
-	// Generate the ISO strings (YYYY-MM-DD) for the min and max dates
-	minDateISO = minDate.getFullYear() + "-" + minDateMonth + "-" + minDateDay;
-	maxDateISO = maxDate.getFullYear() + "-" + maxDateMonth + "-" + maxDateDay;
-	
-	// Set the proper attributes for the input fields
-	document.getElementById("startDate").min = minDateISO;
-	document.getElementById("startDate").max = maxDateISO;
-	document.getElementById("startDate").value = minDateISO;
-	document.getElementById("endDate").min = minDateISO;
-	document.getElementById("endDate").max = maxDateISO;
-	document.getElementById("endDate").value = maxDateISO;
-	document.getElementById("tippingFee").min = 0;
-	document.getElementById("tippingFee").defaultValue = 0
+	setPickerDates();
 	
 	//-------------------------------------------------------------------------
 	// Initialize the employee div.
@@ -258,32 +271,28 @@ function initializeOptions()
 //-----------------------------------------------------------------------------
 function handleCollectionResponse(response)
 {
-	if (response.isError())
-	{
+	if (response.isError()) {
 		alert("Error in collection query: " + response.getMessage() + " " + response.getDetailedMessage());
-		
-		return;
 	}
-	
-	collectionData = response.getDataTable();
-
-	//----------------------------------------------------------------------------
-	// D3 chart creation
-	//----------------------------------------------------------------------------
-	
-	barGraphInit();
-	//chartInit();
-	displaySummaryValues();
-	
-	// If the customization options have not initialized, set them
-	if (!optionsSet)
-	{
-		optionsSet = true;
+	else {
+		collectionData = response.getDataTable();
 		
-		initializeOptions();
-	}
+		// If the customization options have not initialized, set them
+		if (!optionsSet)
+		{
+			optionsSet = true;
 
-	
+			initializeOptions();
+		}
+
+		//----------------------------------------------------------------------------
+		// D3 chart creation
+		//----------------------------------------------------------------------------
+		barGraphInit(0);
+		//chartInit(0);
+		displaySummaryValues();
+	}
+	return 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -310,16 +319,11 @@ function initializeChart()
 //----------------------------------------------------------------------------
 function updateChart()
 {
-	min = new Date(document.getElementById("startDate").value);
-	max = new Date(document.getElementById("endDate").value);
-	
-	// Set the minString to midnight on minDate and the maxString to midnight on the day after maxDate
-	var minString = min.getFullYear() + "." + (min.getMonth() + 1) + "." + (min.getDate() + 1) + " 00:00:00";
-	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate() + 2) + " 00:00:00";
-	
+	dateRange = getDateRange();
+
 	try {	
 		collectionQuery.setQuery("SELECT 'start', 'tons', 'end' FROM " + tonsTableId + " WHERE 'start' >= '"
-			+ minString + "' AND 'start' <= '" + maxString + "' ORDER BY 'start'");
+			+ dateRange[0] + "' AND 'start' <= '" + dateRange[1] + "' ORDER BY 'start'");
 		collectionQuery.send(handleCollectionResponse);
 	}
 	catch(err) {
@@ -336,10 +340,13 @@ function barGraphInit() {
 	}
 
 	//
-	d3.select(window).on('resize', barGraphRefresh);
+	d3.select(window).on('resize', barGraphInit);
+
+	pWidth = document.getElementById('chartDiv').clientWidth;
+	hWidth = document.getElementById('chartDiv').clientHeight;
 
 	var margin = {top: 10, right: 30, bottom: 30, left: 30},
-	    width = 640 - margin.left - margin.right,
+	    width = pWidth - margin.left - margin.right,
 	    height = 480 - margin.top - margin.bottom;
 
 	//set x and y scales
@@ -356,17 +363,38 @@ function barGraphInit() {
 		d.close = d.c[1].v;
 	});
 
-	x.domain([d3.min(data, function(d) { return d.date; }),
-			d3.max(data, function(d) { return d.date; })])
-		.nice(1);
+	dateRange = getDateRange();
 
 	//create histogram object which bins google charts data by date
 	var histogram = d3.histogram()
 		.value(function(d) { return d.date; })
-		.domain(x.domain())
-		.thresholds(x.ticks(d3.timeWeek));
+	groupBy = document.getElementById("group").value;
+	var xAxisDivisions = function() { return d3.timeWeek.every(1)};
+	x.domain([new Date(dateRange[0]), new Date(dateRange[1])]).nice(1);
+	switch(groupBy) {
+		case "day": 
+			histogram.thresholds(x.ticks(d3.timeDay));
+			histogram.domain(x.domain());
+			xAxisDivisions = function() { return d3.timeWeek.every(1)};
+			break;
+		case "month":
+			histogram.thresholds(x.ticks(d3.timeMonth));
+			histogram.domain(x.domain());
+			xAxisDivisions = function() { return d3.timeMonth.every(1)};
+			break;
+		default:
+			x.domain([new Date(dateRange[0]).moveToDayOfWeek(0,-1), 
+					new Date(dateRange[1]).moveToDayOfWeek(0)]);
+			histogram.domain(x.domain());
+			histogram.thresholds(x.ticks(d3.timeWeek));
+	}
+
 	var bins = histogram(data);
 
+	if(bins.length == 1) {
+		alert("Invalid date range");
+		return;
+	}
 	y.domain([0, d3.max(bins, function(d) { return totalTons(d); })]);
 
 	//start drawing the graph, starting with enclosing svg tag
@@ -379,7 +407,7 @@ function barGraphInit() {
 	svg.append("g")
 		.attr("class", "axis axis--x")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)));
+		.call(d3.axisBottom(x).ticks(xAxisDivisions()));
 
 	var bar = svg.selectAll(".bar")
 		.data(bins)
@@ -407,18 +435,18 @@ function barGraphInit() {
 			}
 			return sum;
 		});
-	
+
 	//math needed to calculate how far over to move the tick labels
 	//in order to center them so that the graph makes sense
-	
-	var xAxisWidth = d3.select("g.axis--x .domain").node().getBBox()["width"];
-	var xAxisTicks = d3.selectAll("g.axis--x g.tick")["_groups"][0].length;
-	var wOffset = (xAxisWidth / xAxisTicks / 2 + 1);
-	d3.selectAll("g.axis--x g.tick text")
-		.attr("transform", function() {
-			return "translate(" + wOffset + ", 0)";
-		});
-	
+	function moveLabels() {	
+		var xAxisWidth = d3.select("g.axis--x .domain").node().getBBox()["width"];
+		var xAxisTicks = d3.selectAll("g.axis--x g.tick")["_groups"][0].length;
+		var wOffset = (xAxisWidth / xAxisTicks / 2 + 1);
+		d3.selectAll("g.axis--x g.tick text")
+			.attr("transform", function() {
+				return "translate(" + wOffset + ", 0)";
+			});
+	}
 	//calculates the total tons collected for each given calendar day
 	function totalTons(d) {
 		var sum = 0;
@@ -429,20 +457,6 @@ function barGraphInit() {
 		}
 		return sum;
 	}
-
-	//function to resize chart, not used
-	//in favor of just redrawing the whole thing
-
-	function barGraphRefresh() {
-		var rect = d3.selectAll("g.bar");
-		rect.exit().remove();
-		rect.enter().append("rect")
-			.attr('x', 1)
-			.attr("width", function(d) { return x(d.x1) - x(d.x0) - 1; })
-			//.attr('y', function(d) { return y(totalTons(d)); })
-			.attr("height", function(d) { return height - y(totalTons(d)); }); 
-	}
-
 }
 
 
@@ -518,8 +532,20 @@ function chartInit() {
 	    svg.append("g")
 		.attr("class", "yaxis");
 	    }
-	    d3.select(".xaxis")
-    		.call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
+	    groupBy = document.getElementById("group").value;
+	    switch(groupBy) {
+		    case "week":
+			    d3.select(".xaxis")
+				    .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)));
+			    break;
+		    case "month":
+			    d3.select(".xaxis")
+				    .call(d3.axisBottom(x).ticks(d3.timeMonth.every(1)));
+			    break;
+		    default:
+			    d3.select(".xaxis")
+				    .call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
+	    }
 	    d3.select(".yaxis")
 	        .call(d3.axisLeft(y));
 
@@ -539,7 +565,6 @@ function chartInit() {
 			
 		chart.selectAll('.line')
 		    .attr("d", valueline(data));
-		console.log("RESIZE");
 	    }
 }
 $(document).ready(function() {
