@@ -36,8 +36,8 @@ function getDateRange() {
 	max = new Date(document.getElementById("endDate").value).addDays(2);
 
 	// Set the minString to midnight on minDate and the maxString to midnight on the day after maxDate
-	var minString = min.getFullYear() + "." + (min.getMonth() + 1) + "." + (min.getDate()) + " 00:00:00";
-	var maxString = max.getFullYear() + "." + (max.getMonth() + 1) + "." + (max.getDate()) + " 00:00:00";
+	var minString = min.getFullYear() + "-" + (min.getMonth() + 1) + "-" + (min.getDate()) + " 00:00:00";
+	var maxString = max.getFullYear() + "-" + (max.getMonth() + 1) + "-" + (max.getDate()) + " 00:00:00";
 	return [minString, maxString];
 }
 function setPickerDates() {
@@ -364,6 +364,7 @@ function barGraphInit() {
 	});
 
 	dateRange = getDateRange();
+	console.log(dateRange);
 
 	//create histogram object which bins google charts data by date
 	var histogram = d3.histogram()
@@ -390,12 +391,15 @@ function barGraphInit() {
 	}
 
 	var bins = histogram(data);
+	console.log(bins);
 
 	if(bins.length == 1) {
 		alert("Invalid date range");
 		return;
 	}
-	y.domain([0, d3.max(bins, function(d) { return totalTons(d); })]);
+	y.domain([0, d3.max(bins, function(d) {
+		return (parseInt(totalTons(d) / 100) + 1) * 100; 
+	})]);
 
 	//start drawing the graph, starting with enclosing svg tag
 	var svg = d3.select("#chartDiv").append("svg")
