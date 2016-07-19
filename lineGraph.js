@@ -42,12 +42,21 @@ function chartInit(collectionData) {
 		      "translate(" + margin.left + "," + margin.top + ")");
 
 	// Get the data
-            var data = collectionData.Lf;	
-	    data.forEach(function(d) {
+	    var data;
+            var inputData = collectionData.Lf;
+	    var totalTons = 0, totalRuns = 0;
+	    inputData.forEach(function(d) {
 		d1 = d.c[0].v;
 		str = String(d1);
 		d.date = Date.parse(str.substring(0,15));
-		d.close = d.c[1].v;
+		totalTons += d.c[1].v;
+		totalRuns++;
+		d.close = totalTons / totalRuns;
+		console.log(d.date.getTime());
+		if(data[d.date.getTime()]) {
+			data[d.date.getTime()] = (data[d.date.getTime()] + d.close) / 2;
+		}
+		else data[d.date.getTime()] = d.close;
 	    });
 	    //Scale the range of the data
 	    x.domain(d3.extent(data, function(d) { 

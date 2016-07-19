@@ -195,6 +195,7 @@ function initializeChart()
 	window.addEventListener("keypress", function (e)
 	{
 		if (e.keyCode === 13)
+			e.preventDefault();
 			updateChart();
 	});
 }

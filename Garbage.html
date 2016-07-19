@@ -1,22 +1,12 @@
-<!--	Created by Michael Tingey on 2016-04-01.
-			Edited 7/14/16 Jesse Deisinger
--->
-
 <!DOCTYPE HTML>
-
 <html lang = "en-US">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-	
 		<title>
-			Garbage Tracker
+			BDSP
 		</title>
-		<!--	<base target = "_blank" />-->
 		<meta charset = "UTF-8" />
-		<!--link rel = "stylesheet" href = "Garbage.css" /-->
-		<style> /* set the CSS */
-
-			body { font: 12px Arial;}
+		<style>
 
 			path { 
 			    stroke: steelblue;
@@ -43,50 +33,71 @@
 	</head>
 	
 	<body>
-		<div id="tabDiv" class="row">
-			<div class="col-sm-12">
-			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#chartDiv">Chart</a>
-				<li><a data-toggle="tab" href="#gMap">Map</a>
+		<nav class="navbar navbar-default">
+			<a class="navbar-brand" href="#">Big Data For Small Places</a>
+			<ul class="nav navbar-nav pull-xs-left">
+				<li><a href="#">HOME</a></li>
 			</ul>
-		</div>
-		</div>
+		</nav>
+		<div class="container-fluid">
 		<div id = "mainDiv" class="row">
-			<div id ="visualizationDiv" class="col-sm-6">
+			<div id ="visualizationDiv" class="col-sm-9">
+				<div id="tabDiv" class="row">
+					<div class="col-sm-12">
+						<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#chartDiv">Chart</a>
+						<li><a data-toggle="tab" href="#gMap">Map</a>
+						</ul>
+					</div>
+				</div>
 				<div class="tab-content">
 				<div id ="chartDiv" class="tab-pane active"></div>
-				<div id="gMap" class="tab-pane">
-					<iframe id="gMaps" width="500" height="300" scrolling="no" frameborder="yes" src="https://www.google.com/fusiontables/embedviz?q=select+col4+from+1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ&amp;viz=MAP&amp;h=false&amp;lat=41.74054140411736&amp;lng=-74.0814259472312&amp;t=1&amp;z=18&amp;l=col4&amp;y=2&amp;tmplt=4&amp;hml=KML">
+				<div id="gMap" class="tab-pane embed-responsive embed-responsive-4by3">
+					<iframe class="embed-responsive-item" id="gMaps" scrolling="no" src="https://www.google.com/fusiontables/embedviz?q=select+col4+from+1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ&amp;viz=MAP&amp;h=false&amp;lat=41.74054140411736&amp;lng=-74.0814259472312&amp;t=1&amp;z=18&amp;l=col4&amp;y=2&amp;tmplt=4&amp;hml=KML">
 					</iframe>
 				</div>
 			</div>
+				<div id ="summaryDiv"></div>	
 			</div>
-			<div id ="summaryDiv" class="col-sm-3"></div>
 			<div id = "optionsDiv" class="col-sm-3">
-				<div id = "customizationDiv">
-					<strong>LineChart Customization Options</strong><br /><br />
-					Start Date: <input class="uiElement" type = "date" id = "startDate"><br /><br />
-					End Date: <input class="uiElement" type = "date" id = "endDate"><br /><br />
-					Group by:
-					<form>
-						<select id="group" class="uiElement">
-							<option value="day">Day</option>
-							<option value="week">Week</option>
-							<option value="month">Month</option>
-						</select>
-					</form>
+				<div id = "settingsDiv" class="collapsible">
+					<h3>Settings</h3>
+						<form>
+						<div class="form-group">
+							<label for="startDate">Start Date</label>
+							<input class="uiElement form-control" type = "date" id = "startDate">
+						</div>
+						<div class="form-group">
+							<label for="endDate">End Date</label> 	
+							<input class="uiElement form-control" type = "date" id = "endDate">
+						</div>
+							<form>
+								<div class="form-group">
+									<label for="group">Group by</label>
+									<select id="group" class="uiElement form-control">
+										<option value="day">Day</option>
+										<option value="week">Week</option>
+										<option value="month">Month</option>
+									</select>
+								</div>
+							</form>
+							<div class="form-group">
+								<label for="tippingFee">Tipping Fee ($/ton)</label>
+								<input class="uiElement form-control" type = "number" id = "tippingFee">
+							</div>	
+						</form>
 					<a href="#" onclick='selectChart(0)'>Chart1</a>
 					<a href="#" onclick='selectChart(1)'>Chart2</a>
-					<br/><br/>
-					Tipping Fee ($/ton): <input class="uiElement" type = "number" id = "tippingFee">
 				</div>
 				<div id = "employeeDiv">
-					<strong>Employees</strong><br />
-					<div id = "employeeCheckboxes"></div>
+					<h4>Employees</h4>
+					<form>
+						<div id = "employeeCheckboxes"></div>
+					</form>
 				</div>
 			</div>
 		</div>
-
+	</div>
 <!-- Javascript imports -->
 <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
