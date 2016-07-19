@@ -9,8 +9,8 @@ function chartInit(collectionData) {
 	document.getElementById("chartDiv").innerHTML = "";
 
 	// Set the dimensions of the canvas / graph
-	pWidth = document.getElementById('chartDiv').clientWidth;
-	hWidth = document.getElementById('chartDiv').clientHeight;
+	pWidth = document.getElementById('visualizationDiv').clientWidth - 20;
+	hWidth = document.getElementById('visualizationDiv').clientHeight - 20;
 	var margin = {top: 30, right: 20, bottom: 30, left: 50},
 	    width = pWidth - margin.left - margin.right,
 	    height = 460 - margin.top - margin.bottom;

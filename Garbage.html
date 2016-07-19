@@ -43,9 +43,23 @@
 	</head>
 	
 	<body>
+		<div id="tabDiv" class="row">
+			<div class="col-sm-12">
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#chartDiv">Chart</a>
+				<li><a data-toggle="tab" href="#gMap">Map</a>
+			</ul>
+		</div>
+		</div>
 		<div id = "mainDiv" class="row">
 			<div id ="visualizationDiv" class="col-sm-6">
-				<div id ="chartDiv"></div>
+				<div class="tab-content">
+				<div id ="chartDiv" class="tab-pane active"></div>
+				<div id="gMap" class="tab-pane">
+					<iframe id="gMaps" width="500" height="300" scrolling="no" frameborder="yes" src="https://www.google.com/fusiontables/embedviz?q=select+col4+from+1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ&amp;viz=MAP&amp;h=false&amp;lat=41.74054140411736&amp;lng=-74.0814259472312&amp;t=1&amp;z=18&amp;l=col4&amp;y=2&amp;tmplt=4&amp;hml=KML">
+					</iframe>
+				</div>
+			</div>
 			</div>
 			<div id ="summaryDiv" class="col-sm-3"></div>
 			<div id = "optionsDiv" class="col-sm-3">
@@ -83,6 +97,7 @@
 <script type = "text/javascript" src = "gMath.js"></script>
 <script type = "text/javascript" src = "barGraph.js"></script>
 <script type = "text/javascript" src = "lineGraph.js"></script>
+<script type = "text/javascript" src = "gMaps.js"></script>
 <!-- End Javascript imports -->
 
 	</body>

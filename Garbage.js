@@ -219,8 +219,14 @@ function updateChart()
 
 $(document).ready(function() {
 	$(".uiElement").change(function() {
+		dateRange = getDateRange();
 		updateChart();
+		setMap(dateRange[0], dateRange[1]);
 	});
+	$('a[data-toggle="tab"]').on('show', function (e) {
+    		updateChart(collectionData);
+		console.log("listener triggered");
+	}); 
 });
 function renderChart(collectionData) {
 	switch(chartSelection) {

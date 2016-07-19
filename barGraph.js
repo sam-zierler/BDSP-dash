@@ -9,8 +9,8 @@ function barGraphInit(collectionData) {
 		barGraphInit(collectionData);
 	});
 
-	pWidth = document.getElementById('chartDiv').clientWidth;
-	hWidth = document.getElementById('chartDiv').clientHeight;
+	pWidth = document.getElementById('visualizationDiv').clientWidth - 20;
+	hWidth = document.getElementById('visualizationDiv').clientHeight - 20;
 
 	var margin = {top: 10, right: 30, bottom: 30, left: 30},
 	    width = pWidth - margin.left - margin.right,
@@ -78,7 +78,7 @@ function barGraphInit(collectionData) {
 
 	svg.append("g")
 		.attr("class", "axis axis--y")
-		.call(d3.axisLeft(y).tickSize(-width - margin.right,0,0));
+		.call(d3.axisLeft(y).tickSize(-width,0,0));
 
 	var bar = svg.selectAll(".bar")
 		.data(bins)
