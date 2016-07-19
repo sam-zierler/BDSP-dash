@@ -11,7 +11,7 @@
 		<title>
 			Garbage Tracker
 		</title>
-		<base target = "_blank" />
+		<!--	<base target = "_blank" />-->
 		<meta charset = "UTF-8" />
 		<!--link rel = "stylesheet" href = "Garbage.css" /-->
 		<style> /* set the CSS */
@@ -23,7 +23,10 @@
 			    stroke-width: 2;
 			    fill: none;
 			}
+			.axis--y g.tick line{
+				stroke: silver;
 
+			}
 			.axis path,
 			.axis line {
 			    fill: none;
@@ -32,7 +35,7 @@
 			    shape-rendering: crispEdges;
 			}
 			.bar text {
-							fill: white;
+				fill: black;
 			}
 
 		</style>
@@ -58,6 +61,8 @@
 							<option value="month">Month</option>
 						</select>
 					</form>
+					<a href="#" onclick='selectChart(0)'>Chart1</a>
+					<a href="#" onclick='selectChart(1)'>Chart2</a>
 					<br/><br/>
 					Tipping Fee ($/ton): <input class="uiElement" type = "number" id = "tippingFee">
 				</div>

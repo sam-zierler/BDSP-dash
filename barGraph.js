@@ -31,7 +31,6 @@ function barGraphInit(collectionData) {
 	});
 
 	dateRange = getDateRange();
-	console.log(new Date(dateRange));
 	//create histogram object which bins google charts data by date
 	var histogram = d3.histogram()
 		.value(function(d) { return d.date; })
@@ -58,8 +57,8 @@ function barGraphInit(collectionData) {
 
 	var bins = histogram(data);
 	if(bins.length == 1) {
-		alert("Invalid date range");
-		return;
+	//	alert("Invalid date range");
+	//	return;
 	}
 	y.domain([0, d3.max(bins, function(d) {
 		return (parseInt(totalTons(d) / 100) + 1) * 100; 
@@ -77,12 +76,22 @@ function barGraphInit(collectionData) {
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x).ticks(xAxisDivisions()));
 
+	svg.append("g")
+		.attr("class", "axis axis--y")
+		.call(d3.axisLeft(y).tickSize(-width - margin.right,0,0));
+
 	var bar = svg.selectAll(".bar")
 		.data(bins)
 		.enter().append("g")
 		.attr("class", "bar")
 		.attr("transform", function(d) { 
 			return "translate(" + x(d.x0) + "," + y(totalTons(d)) + ")";
+		})
+		.on('mouseover', function(d) {
+			d3.select(this).select("text").attr("opacity", 1.0);
+		})
+		.on('mouseout', function(d) {
+			d3.select(this).select("text").attr("opacity", 0.0);
 		});
 
 	bar.append("rect")
@@ -92,10 +101,11 @@ function barGraphInit(collectionData) {
 			return height - y(totalTons(d)); });
 
 	bar.append("text")
-		.attr("dy", ".50em")
+		.attr("dy", "-1.0em")
 		.attr("y", 6)
 		.attr("x", function(d) { return (x(d.x1) - x(d.x0)) / 2; })
 		.attr("text-anchor", "middle")
+		.attr("opacity", "0.0")
 		.text(function(d) {
 			sum = totalTons(d);
 			if( sum == 0 ) {

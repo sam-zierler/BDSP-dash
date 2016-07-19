@@ -29,6 +29,7 @@ var collectionQuery;
 var collectionData;
 var employeeData;
 var optionsSet = false;
+var chartSelection = 0; 
 
 /* getDateRange() gets the start and end date values from the UI
  * and returns an array of their values as formatted strings */
@@ -37,8 +38,8 @@ function getDateRange() {
 	max = new Date(document.getElementById("endDate").value).addDays(2);
 
 	// Set the minString to midnight on minDate and the maxString to midnight on the day after maxDate
-	var minString = min.getFullYear() + "/" + (min.getMonth() + 1) + "/" + (min.getDate()) + " 00:00:00";
-	var maxString = max.getFullYear() + "/" + (max.getMonth() + 1) + "/" + (max.getDate()) + " 00:00:00";
+	var minString = min.getFullYear() + "-" + (min.getMonth() + 1) + "-" + (min.getDate()) + " 00:00:00";
+	var maxString = max.getFullYear() + "-" + (max.getMonth() + 1) + "-" + (max.getDate()) + " 00:00:00";
 	return [minString, maxString];
 }
 
@@ -65,15 +66,16 @@ function setPickerDates() {
 		maxDateDay = "0" + maxDateDay;
 	
 	// Generate the ISO strings (YYYY-MM-DD) for the min and max dates
-	var minDateISO = minDate.getFullYear() + "/" + minDateMonth + "/" + minDateDay;
-	var maxDateISO = maxDate.getFullYear() + "/" + maxDateMonth + "/" + maxDateDay;
+	var minDateISO = minDate.getFullYear() + "-" + minDateMonth + "-" + minDateDay;
+	var maxDateISO = maxDate.getFullYear() + "-" + maxDateMonth + "-" + maxDateDay;
 	
 	// Set the proper attributes for the input fields
 	document.getElementById("startDate").min = minDateISO;
 	document.getElementById("startDate").max = maxDateISO;
-	document.getElementById("startDate").value = minDateISO;
 	document.getElementById("endDate").min = minDateISO;
 	document.getElementById("endDate").max = maxDateISO;
+	
+	document.getElementById("startDate").value = minDateISO;
 	document.getElementById("endDate").value = maxDateISO;
 	document.getElementById("tippingFee").min = 0;
 	document.getElementById("tippingFee").defaultValue = 0
@@ -168,11 +170,10 @@ function handleCollectionResponse(response)
 			initializeOptions();
 		}
 
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		// D3 chart creation
-		//----------------------------------------------------------------------------
-		barGraphInit(collectionData);
-		//chartInit(collectionData);
+//---------------------------------------------------------------------
+		renderChart(collectionData);
 		displaySummaryValues();
 	}
 	optionsSet = true;
@@ -221,4 +222,20 @@ $(document).ready(function() {
 		updateChart();
 	});
 });
+function renderChart(collectionData) {
+	switch(chartSelection) {
+		case 0: 
+			barGraphInit(collectionData);
+			break;
+		case 1: 
+			chartInit(collectionData);
+			break;
+		default:
+			break;
+	}
+}
+function selectChart(newSelection) {
+	chartSelection = newSelection;
+	updateChart();
+}
 
