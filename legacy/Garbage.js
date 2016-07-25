@@ -8,21 +8,8 @@
 google.charts.load("current", {packages:['corechart', 'table']});
 google.charts.setOnLoadCallback(initializeChart);
 
-var tonsTableId, empTableId; 
-
-var xmlHttp = new XMLHttpRequest();
-var url = "garbageData.php";
-
-xmlHttp.onreadystatechange = function() {
-	if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-		var tableArray = JSON.parse(xmlHttp.responseText);
-		tonsTableId = tableArray[0];
-		empTableId = tableArray[1];
-	}
-};
-xmlHttp.open("POST", url, true);
-xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xmlHttp.send("query=tableids");
+var tonsTableId = '1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ'
+var empTableId = '1N5MESRSevHsiuQilArUgqb_QDaxCyBk-HhMMh_3f';
 
 /* Google charts data and query variables */
 var collectionQuery;
