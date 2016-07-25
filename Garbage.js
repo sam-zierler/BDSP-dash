@@ -22,7 +22,7 @@ xmlHttp.onreadystatechange = function() {
 };
 xmlHttp.open("POST", url, true);
 xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xmlHttp.send("Test=test");
+xmlHttp.send("query=tableids");
 
 /* Google charts data and query variables */
 var collectionQuery;
@@ -244,5 +244,73 @@ function renderChart(collectionData) {
 function selectChart(newSelection) {
 	chartSelection = newSelection;
 	updateChart();
+}
+function getEmployeeData() {
+	var query = "SELECT * FROM " +
+		empTableId;
+	var encodedQuery = encodeURIComponent(query);
+	var url = ['https://www.googleapis.com/fusiontables/v1/query'];
+	url.push('?sql=' + encodedQuery);
+	url.push('&key=AIzaSyAP6HP8YwGUXYu4AZ_syH2SjlxqfwkLHLU');
+	url.push('&callback=?');
+
+	$.ajax({
+		url: url.join(''),
+		dataType: 'jsonp',
+		success: function(data) {
+			var rows = data['rows'];
+			var table = document.getElementById("employeeTable");
+			table.innerHTML = '';
+			for(var i in rows) {
+				var fName = rows[i][0];
+				var lName = rows[i][1];
+				var rate = rows[i][2];
+				var tRow = document.createElement('tr');
+				var tfName = document.createElement('td');
+				tfName.innerHTML = fName + " " + lName;
+				var tlName = document.createElement('td');
+				tlName.innerHTML = lName;
+				var tRate = document.createElement('td');
+				tRate.innerHTML = rate;
+				tRow.appendChild(tfName);
+				tRow.appendChild(tlName);
+				tRow.appendChild(tRate);
+				table.appendChild(tRow);
+			}
+		}
+	});
+}
+function getRunData() {
+	var query = "SELECT truckID, start FROM " +
+		tonsTableId;
+	var encodedQuery = encodeURIComponent(query);
+	var url = ['https://www.googleapis.com/fusiontables/v1/query'];
+	url.push('?sql=' + encodedQuery);
+	url.push('&key=AIzaSyAP6HP8YwGUXYu4AZ_syH2SjlxqfwkLHLU');
+	url.push('&callback=?');
+
+	$.ajax({
+		url: url.join(''),
+		dataType: 'jsonp',
+		success: function(data) {
+			var rows = data['rows'];
+			var table = document.getElementById("employeeTable");
+			table.innerHTML = '';
+
+			console.log(rows);
+			for(var i in rows) {
+				var fName = rows[i][0];
+				var lName = rows[i][1].substring(0,10);
+				var tRow = document.createElement('tr');
+				var tfName = document.createElement('td');
+				tfName.innerHTML = fName;
+				var tlName = document.createElement('td');
+				tlName.innerHTML = lName;
+				tRow.appendChild(tfName);
+				tRow.appendChild(tlName);
+				table.appendChild(tRow);
+			}
+		}
+	});
 }
 

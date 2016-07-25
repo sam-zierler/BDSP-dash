@@ -29,6 +29,7 @@
 			}
 
 		</style>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	</head>
 	
@@ -36,7 +37,9 @@
 		<nav class="navbar navbar-default">
 			<a class="navbar-brand" href="#">Big Data For Small Places</a>
 			<ul class="nav navbar-nav pull-xs-left">
-				<li><a href="#">HOME</a></li>
+				<li><a href="#">Garbage</a></li>
+				<li><a href="#">Recycling</a></li>
+				<li><a href="#">Municipal</a></li>
 			</ul>
 		</nav>
 		<div class="container-fluid">
@@ -47,14 +50,26 @@
 						<ul class="nav nav-tabs">
 						<li class="active"><a data-toggle="tab" href="#chartDiv">Chart</a>
 						<li><a data-toggle="tab" href="#gMap">Map</a>
+						<li><a data-toggle="tab" href="#employeeTab" onclick="getRunData()">Employees</a>
 						</ul>
 					</div>
 				</div>
 				<div class="tab-content">
+
+		<!-- Displayed when chart tab selected -->
 				<div id ="chartDiv" class="tab-pane active"></div>
+
+		<!-- Displayed when map tab selected -->
 				<div id="gMap" class="tab-pane embed-responsive embed-responsive-4by3">
 					<iframe class="embed-responsive-item" id="gMaps" scrolling="no" src="https://www.google.com/fusiontables/embedviz?q=select+col4+from+1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ&amp;viz=MAP&amp;h=false&amp;lat=41.74054140411736&amp;lng=-74.0814259472312&amp;t=1&amp;z=18&amp;l=col4&amp;y=2&amp;tmplt=4&amp;hml=KML">
 					</iframe>
+				</div>
+
+		<!-- Displayed when employee tab selected -->
+
+				<div id="employeeTab">
+					<table class="table table-striped" id="employeeTable">
+					</table>
 				</div>
 			</div>
 				<div id ="summaryDiv"></div>	
@@ -68,7 +83,7 @@
 							<input class="uiElement form-control" type = "date" id = "startDate">
 						</div>
 						<div class="form-group">
-							<label for="endDate">End Date</label> 	
+							<label for="endDate">End Date</label> 
 							<input class="uiElement form-control" type = "date" id = "endDate">
 						</div>
 							<form>
@@ -86,8 +101,9 @@
 								<input class="uiElement form-control" type = "number" id = "tippingFee">
 							</div>	
 						</form>
-					<a href="#" onclick='selectChart(0)'>Chart1</a>
-					<a href="#" onclick='selectChart(1)'>Chart2</a>
+					<a href="#" onclick='selectChart(0)'>Totals</a>
+					<br />
+					<a href="#" onclick='selectChart(1)'>Running average</a>
 				</div>
 				<div id = "employeeDiv">
 					<h4>Employees</h4>
@@ -104,6 +120,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.1.0/d3.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.js"></script>
 <script type = "text/javascript" src = "Garbage.js"></script>
 <script type = "text/javascript" src = "gMath.js"></script>
 <script type = "text/javascript" src = "barGraph.js"></script>

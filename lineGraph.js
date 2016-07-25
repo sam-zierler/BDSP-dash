@@ -26,7 +26,7 @@ function chartInit(collectionData) {
 	// Define the line
 	var valueline = d3.line()
 	    .x(function(d) { return x(d.date); })
-	    .y(function(d) { return y(d.close); });
+	    .y(function(d) { return y(d.avg); });
 	    
 	// Adds the svg canvas
 	var svg = d3.select("#chartDiv")
@@ -42,7 +42,8 @@ function chartInit(collectionData) {
 		      "translate(" + margin.left + "," + margin.top + ")");
 
 	// Get the data
-	    var data;
+	    var data = [];
+	    var objData = {};
             var inputData = collectionData.Lf;
 	    var totalTons = 0, totalRuns = 0;
 	    inputData.forEach(function(d) {
@@ -52,17 +53,24 @@ function chartInit(collectionData) {
 		totalTons += d.c[1].v;
 		totalRuns++;
 		d.close = totalTons / totalRuns;
-		console.log(d.date.getTime());
-		if(data[d.date.getTime()]) {
-			data[d.date.getTime()] = (data[d.date.getTime()] + d.close) / 2;
+		if(objData[d.date.getTime()]) {
+			objData[d.date.getTime()]["avg"] = (objData[d.date.getTime()]["avg"] + d.close) / 2;
 		}
-		else data[d.date.getTime()] = d.close;
+		else {
+			objData[d.date.getTime()] = {};
+			objData[d.date.getTime()]["avg"] = d.close;
+		}
+		objData[d.date.getTime()]["date"] = d.date;
 	    });
-	    //Scale the range of the data
+	    for(var obj in objData) {
+		    data.push({avg:objData[obj].avg,date:objData[obj].date});
+	    }
 	    x.domain(d3.extent(data, function(d) { 
 		    return d.date; 
 	    }));
-	    y.domain([0, d3.max(data, function(d) { return d.close; })]);
+	    y.domain([0, d3.max(data, function(d) { 
+		    return d.avg; 
+	    })]);
 	   
 	    // Add the valueline path.
 	    svg.append("path")
