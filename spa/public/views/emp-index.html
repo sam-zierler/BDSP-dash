@@ -1,0 +1,21 @@
+<table class="table">
+    <th>{{vm.rows.columns[0]}}</th>
+    <th>{{vm.rows.columns[1]}}</th>
+    <th>{{vm.rows.columns[2]}}</th>
+
+    <tr ng-repeat="row in vm.rows.rows">
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+    </tr>
+</table>
+<table class="table">
+    <th>{{vm.runs.columns[0]}}</th>
+    <th>{{vm.runs.columns[1]}}</th>
+    <th>{{vm.runs.columns[2]}}</th>
+    <tr ng-repeat="row in vm.runs.rows">
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+    </tr>
+</table>

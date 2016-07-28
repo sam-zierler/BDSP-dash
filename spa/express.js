@@ -3,7 +3,7 @@ var express = require('express'),
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var runs = require('./Model/runs.js');
-var barGraph = require('./public/barGraph.js');
+var employees = require('./Model/employees.js');
 
 console.log(__dirname + '/public');
 app.use(express.static(__dirname + '/public'));
@@ -20,6 +20,11 @@ app.get("/runs", function(req,res) {
 })
 .post("/runs", function(req, res) {
     runs.post(req.start,req.end,function(err,rows) {
+        res.send(rows);
+    })
+})
+.get("/employees", function(req,res) {
+    employees.get(function(err,rows){
         res.send(rows);
     })
 })
