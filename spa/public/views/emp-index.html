@@ -1,4 +1,5 @@
-<table class="table">
+<div class="panel panel-default" style="margin-top:15px">
+<table class="table table-hover">
     <th>{{vm.rows.columns[0]}}</th>
     <th>{{vm.rows.columns[1]}}</th>
     <th>{{vm.rows.columns[2]}}</th>
@@ -9,13 +10,5 @@
         <td>{{row[2]}}</td>
     </tr>
 </table>
-<table class="table">
-    <th>{{vm.runs.columns[0]}}</th>
-    <th>{{vm.runs.columns[1]}}</th>
-    <th>{{vm.runs.columns[2]}}</th>
-    <tr ng-repeat="row in vm.runs.rows">
-        <td>{{row[0]}}</td>
-        <td>{{row[1]}}</td>
-        <td>{{row[2]}}</td>
-    </tr>
-</table>
+</div>
+<admin-panel>Jesse</admin-panel>

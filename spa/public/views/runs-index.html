@@ -1,34 +1,53 @@
-
-<script>
-</script>
-<div id="mainDiv" class="row">
-    <div id="visDiv" class="col-sm-9">
-    <button ng-click="deThree()"></button>
-    </div>
-    <div id="optionsDiv" class="col-sm-3">
-        <div id="settingsDiv" class="collapsible">
-            <h3>Settings</h3>
-            <form>
-                <div class="form-group">
-                    <label for="startDate">Start Date</label>
-                    <input class="uiElement form-control" type="date" id="startDate">
-                </div>
-                <div class="form-group">
-                    <label for="endDate">End Date</label>
-                    <input class="uiElement form-control" type="date" id="endDate">
-                </div>
-                <form>
+<!--<a href="" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a>-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default" style="margin-top:15px">
+            <div class="panel-heading heading-right-t">
+                Filters:
+            </div>
+            <div class="panel-body">
+                <form class="form-inline">
                     <div class="form-group">
-                        <label for="group">Group by</label>
-                        <select id="group" class="uiElement form-control">
-										<option value="day">Day</option>
-										<option value="week">Week</option>
-										<option value="month">Month</option>
-									</select>
+                        <label for="startDate">Start Date</label>
+                        <input class="uiElement form-control" type="date" id="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date</label>
+                        <input class="uiElement form-control" type="date" id="endDate">
                     </div>
                 </form>
-            </form>
-            <br />
+                <hr>
+                <table class="table table-hover" id="run-table">
+                <thead>
+                    <!--
+        <th ng-repeat="hdr in vm.rows.columns track by $index">{{hdr}}</th>
+        -->
+                    <th>Truck ID</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Run #</th>
+                    <th>Tons</th>
+                    <th>Distance (mi)</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in vm.rows.rows track by $index">
+                        <td ng-repeat="col in row track by $index">{{col}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            
         </div>
+
     </div>
-</div>
+    <script>
+        $().ready(function() {
+            $("#run-table").click(function(event) {
+                var parent = event.parentElement;
+                console.log(parent);
+                console.log(event);
+                jEvent = event;
+            });
+        });
+        $('[data-toggle="popover"]').popover();
+    </script>

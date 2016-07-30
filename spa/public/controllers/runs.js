@@ -1,13 +1,9 @@
 angular.module('app')
-    .controller('runsController', function($http, $location, $scope, d3Service) {
+    .controller('runsController', function($http, $location, $scope) {
         var self = this;
-        var rows;
         $http.get("/runs")
             .success(function(data) {
-                rows = data;
-                //barGraph("visDiv",rows["rows"]);
+                self.rows = data;
         });
-        $scope.deThree = function() {
-            d3Service();
-        }
+
     })

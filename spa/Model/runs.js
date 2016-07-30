@@ -6,7 +6,7 @@ module.exports = {
     blank: function(){ return {} },
     get: function(ret) {
         var conn = google.fusiontables('v2');
-        conn.query.sql({sql:"SELECT 'start', 'tons', 'end' FROM " + tonsTableId + " ORDER BY 'start'", auth:API_KEY}, function(err, res) {
+        conn.query.sql({sql:"SELECT 'truckID', 'start', 'end', 'run', 'tons', 'distance' FROM " + tonsTableId + " ORDER BY 'start'", auth:API_KEY}, function(err, res) {
             ret(err, res);
         });
     },

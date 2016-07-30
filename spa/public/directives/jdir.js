@@ -8,9 +8,14 @@ angular.module('deisingj1.directives', [])
             templateUrl: 'directives/panel.html'
         }
     })
-    .factory('d3Service', function() {
+    .directive('adminPanel', function(){
+        return {
+            template : "HELLO"
+        };
+    })
+    .factory('d3Service', ['$log', function() {
         var d3;
         d3 = 3;
         window.alert("HELLO"); 
         return d3;
-    });
+    }]);

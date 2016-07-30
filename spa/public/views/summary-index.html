@@ -1,0 +1,147 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1>
+            This Week:    <hr>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Small panel -->
+        <div class="col-md-12 col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading heading-right-t">
+                    Map
+                </div>
+                <div class="panel-body">
+                    
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+
+        <div class="row">
+            <!-- Small panel -->
+            <div class="col-md-12 col-lg-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3 heading-big">
+                                <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="heading-right-t">
+                                    3
+                                </div>
+                                <div class="heading-right-b">
+                                    Unassigned runs
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#/employees">
+                        <div class="panel-body">
+                            View Details <span class="text-right glyphicon glyphicon-menu-right"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- Small panel -->
+            <div class="col-md-12 col-lg-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3 heading-big">
+                                <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="heading-right-t">
+                                    95
+                                </div>
+                                <div class="heading-right-b">
+                                    Tons Collected
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#/runs">
+                        <div class="panel-body">
+                            View Details <span class="text-right glyphicon glyphicon-menu-right"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading heading-right-t">Daily Totals:</div>
+                    <div class="panel-body">
+                        <div id="summaryChart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading heading-right-t">Average Run:</div>
+                    <div class="panel-body">
+                        <div id="avgGauge"></div>
+                        <div id="avg2Gauge"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    new Morris.Line({
+        // ID of the element in which to draw the chart.
+        element: 'summaryChart',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [{
+                date: '2016-07-25',
+                value: 17
+            }, {
+                date: '2016-07-26',
+                value: 21
+            }, {
+                date: '2016-07-27',
+                value: 25
+            }, {
+                date: '2016-07-28',
+                value: 14
+            }, {
+                date: '2016-07-29',
+                value: 18
+            }
+
+        ],
+        // The name of the data record attribute that contains x-values.
+        xkey: 'date',
+        // A list of names of data record attributes that contain y-values.
+        ykeys: ['value'],
+        parseTime: false,
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['Tons']
+    });
+    var g = new JustGage({
+        id: "avgGauge",
+        value: 67,
+        min: 0,
+        max: 100,
+        levelColors: ["#FF0000", "#FFFF00", "#00FF00"],
+        title: "This week"
+    });
+    var g2 = new JustGage({
+        id: "avg2Gauge",
+        value: 23,
+        min: 0,
+        max: 100,
+        levelColors: ["#FF0000", "#FFFF00", "#00FF00"],
+        title: "Lifetime"
+    });
+</script>

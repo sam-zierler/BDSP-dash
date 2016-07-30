@@ -8,6 +8,7 @@
 	</title>
 	<meta charset="UTF-8" />
 	<style>
+	/*
 		path {
 			stroke: steelblue;
 			stroke-width: 2;
@@ -25,13 +26,38 @@
 			stroke-width: 1;
 			shape-rendering: crispEdges;
 		}
-		
+		*/
 		.bar text {
 			fill: black;
 		}
+		
+		.heading-big {
+			font-size: 4em;
+		}
+		
+		.heading-right-t {
+			font-size: 2em;
+			display: block;
+		}
+		
+		.heading-right-b {
+			font-size: 1em;
+			display: block;
+		}
+		
+		.img-nav {
+			width: 90%;
+			height: auto;
+			display: block;
+			margin: auto;
+			padding: 8px 4px;
+			border-radius: 125px;
+		}
 	</style>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 	<link rel="stylesheet" href="dist/css/sb-admin-2.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 
@@ -43,34 +69,46 @@
 			<li><a href="#">Recycling</a></li>
 			<li><a href="#">Municipal</a></li>
 		</ul>
+		<ul class="nav navbar-nav navbar-right" style="padding-right:20px">
+			<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href=""><span class="glyphicon glyphicon-off" aria-hidden="true"></span> John Doe</a>
+				<ul class="dropdown-menu dropdown-user">
+					<li><a href="">Log out</a></li>
+					<li><a href="">Log in</a></li>
+				</ul>
+			</li>
+		</ul>
 	</nav>
-		<div class="navbar-default sidebar" style="height:100%">
-			<div class="sidebar-nav navbar-collapse" style="margin-top: 0px;height:100%">
+	<div class="navbar-default sidebar" style="height:100%">
+		<div class="sidebar-nav navbar-collapse" style="margin-top: 0px;height:100%">
+			<img class="img img-nav" src="res/seal.jpg" />
 			<ul class="nav in" id="side-menu">
-				<li role="presentation"><a href="#/summary">Summary</a></li>
-				<li role="presentation"><a href="#/runs">Runs</a></li>
-				<li role="presentation"><a href="#/employees">Employees</a></li>
-				<li role="presentation"><a href="#/stats">Statistics</a></li>
+				<li role="presentation"><a href="#/summary"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>	Summary</a></li>
+				<li role="presentation"><a href="#/runs"><span class="glyphicon glyphicon-road" aria-hidden="true"></span>	Runs</a></li>
+				<li role="presentation"><a href="#/assign"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>	Assign</a></li>
+				<li role="presentation"><a href="#/employees"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>	Employees</a></li>
+				<li role="presentation"><a href="#/stats"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Statistics</a></li>
 			</ul>
-			</div>
 		</div>
-		<div id="page-wrapper" ng-view style="padding:15px"></div>
+	</div>
+	<div id="page-wrapper" ng-view style="padding:15px; padding-top:0px;"></div>
 	<!-- Javascript imports -->
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.1.0/d3.min.js"></script>
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.js"></script>
-	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+ 	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.2/justgage.min.js"></script>
+
 	<script type="text/javascript" src="dist/js/sb-admin-2.js"></script>
 	<script type="text/javascript" src="barGraph.js"></script>
-	<script type="text/javascript" src="directives/jdir.js"></script>
-	
 
-<!--
+
+
+	<!--
 	<script type="text/javascript" src="Garbage.js"></script>
 	<script type="text/javascript" src="gMath.js"></script>
 	<script type="text/javascript" src="lineGraph.js"></script>
@@ -94,23 +132,24 @@
 					controller: 'summaryController',
 					controllerAs: 'vm'
 				}).
+				when('/assign', {
+					templateUrl: 'views/assign-index.html',
+					controller: 'assignController',
+					controllerAs: 'vm'
+				}).
 				otherwise({
 					redirectTo: '/'
 				});
-				/*
-		})
-		.controller('getUser', function($http) {
-			var self = this;
-			$http.get("/currentUser")
-			.success(function(data) {
-				self.USR = data;
-				console.log(data);
-			})
-		*/
+
 			});
+			
+
 	</script>
-	<script type="text/javascript" src="controllers/runs.js"></script>
-	<script type="text/javascript" src="controllers/employees.js"></script>
+		<script type="text/javascript" src="directives/jdir.js"></script>
+		<script type="text/javascript" src="controllers/assign.js"></script>
+		<script type="text/javascript" src="controllers/runs.js"></script>
+		<script type="text/javascript" src="controllers/employees.js"></script>
+
 	<!-- End Javascript imports -->
 
 </body>
