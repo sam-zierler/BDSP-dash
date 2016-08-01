@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('employeesController', ['d3Service', function(d3Service, $http, $location, $scope){
+    .controller('employeesController', ['d3Service', $, function(d3Service, $http, $location, $scope){
         var self = this;
         $http.get("/employees")
             .success(function(data) {
