@@ -4,6 +4,6 @@ angular.module('app')
         $http.get("/runs")
             .success(function(data) {
                 self.rows = data;
+                $scope.rows = self.rows.rows;
         });
-
     })

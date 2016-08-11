@@ -2,14 +2,14 @@
 function barGraphInit(elem, data) {
 
 	// clear chartDiv before the graph is redrawn
-
-	document.getElementById(elem).innerHTML = "";
+	elem.innerHTML = "";
+	//document.getElementById(elem).innerHTML = "";
 	d3.select(window).on('resize', function() {
 		barGraphInit(elem,data);
 	});
 
-	pWidth = document.getElementById(elem).clientWidth - 20;
-	hWidth = document.getElementById(elem).clientHeight - 20;
+	pWidth = elem.clientWidth - 20;
+	hWidth = elem.clientHeight - 20;
 
 	var margin = {top: 10, right: 30, bottom: 30, left: 30},
 	    width = pWidth - margin.left - margin.right,
@@ -32,7 +32,7 @@ function barGraphInit(elem, data) {
 	//create histogram object which bins google charts data by date
 	var histogram = d3.histogram()
 		.value(function(d) { return d.date; })
-	groupBy = document.getElementById("group").value;
+	//groupBy = document.getElementById("group").value;
 	groupBy = "week";
 	var xAxisDivisions = function() { return d3.timeWeek.every(1)};
 	x.domain([new Date(dateRange[0]), new Date(dateRange[1])]).nice(1);
@@ -111,7 +111,7 @@ function barGraphInit(elem, data) {
 			}
 			return sum;
 		});
-
+		
 	//math needed to calculate how far over to move the tick labels
 	//in order to center them so that the graph makes sense
 	function moveLabels() {	
@@ -134,12 +134,12 @@ function barGraphInit(elem, data) {
 		return sum;
 	}
 	function getDateRange() {
-		min = new Date(document.getElementById("startDate").value).addDays(1);
-		max = new Date(document.getElementById("endDate").value).addDays(2);
+		//min = new Date(document.getElementById("startDate").value).addDays(1);
+		//max = new Date(document.getElementById("endDate").value).addDays(2);
 
 		// Set the minString to midnight on minDate and the maxString to midnight on the day after maxDate
-		var minString = min.getFullYear() + "-" + (min.getMonth() + 1) + "-" + (min.getDate()) + " 00:00:00";	
-		var maxString = max.getFullYear() + "-" + (max.getMonth() + 1) + "-" + (max.getDate()) + " 00:00:00";
+		//var minString = min.getFullYear() + "-" + (min.getMonth() + 1) + "-" + (min.getDate()) + " 00:00:00";	
+		//var maxString = max.getFullYear() + "-" + (max.getMonth() + 1) + "-" + (max.getDate()) + " 00:00:00";
 		//return [minString, maxString];
 		return ["2016-06-01 00:00:00", "2016-07-31 00:00:00"]; 
 	}
