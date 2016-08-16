@@ -8,7 +8,12 @@
 	</title>
 	<meta charset="UTF-8" />
 	<style>
-
+		body {
+			overflow: hidden;
+		}
+		#page-wrapper {
+			overflow:auto;
+		}
 		bars-chart path {
 			stroke: steelblue;
 			stroke-width: 2;
@@ -68,7 +73,7 @@
 			<li><a href="#">Recycling</a></li>
 			<li><a href="#">Municipal</a></li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right" style="padding-right:20px">
+		<ul class="nav navbar-nav navbar-right" style="margin-right:20px">
 			<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href=""><span class="glyphicon glyphicon-off" aria-hidden="true"></span> John Doe</a>
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="">Log out</a></li>
@@ -77,8 +82,8 @@
 			</li>
 		</ul>
 	</nav>
-	<div class="navbar-default sidebar" style="height:100%">
-		<div class="sidebar-nav navbar-collapse" style="margin-top: 0px;height:100%">
+	<div class="navbar-default sidebar">
+		<div class="sidebar-nav navbar-collapse" style="margin-top: 0px;">
 			<img class="img img-nav" src="res/seal.jpg" />
 			<ul class="nav in" id="side-menu">
 				<li role="presentation"><a href="#/summary"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>	Summary</a></li>
@@ -94,13 +99,12 @@
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.1.0/d3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-sanitize.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.19.1/select.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
- 	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+	<script type="text/javascript" src="dist/js/dirPagination.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.2/justgage.min.js"></script>
 
 	<script type="text/javascript" src="dist/js/sb-admin-2.js"></script>
@@ -108,8 +112,8 @@
 
 
 	<script type="text/javascript">
-		angular.module('app', ['ngRoute', 'ui.select', 'ngSanitize', 'deisingj1.directives'])
-			.config(function($routeProvider) {
+		angular.module('app', ['ngRoute', 'ui.select', 'angularUtils.directives.dirPagination', 'ngSanitize', 'deisingj1.directives'])
+			.config(function($routeProvider, $httpProvider) {
 				$routeProvider.
 				when('/runs', {
 					templateUrl: 'views/runs-index.html',
@@ -134,12 +138,15 @@
 				otherwise({
 					redirectTo: '/'
 				});
+				//$httpProvider.defaults.cache = true;
 
 			});
 			
 
 	</script>
 		<script type="text/javascript" src="directives/jdir.js"></script>
+		<script type="text/javascript" src="filters/dateRange.js"></script>
+		<script type="text/javascript" src="services/fusiontable.js"></script>
 		<script type="text/javascript" src="controllers/assign.js"></script>
 		<script type="text/javascript" src="controllers/runs.js"></script>
 		<script type="text/javascript" src="controllers/employees.js"></script>

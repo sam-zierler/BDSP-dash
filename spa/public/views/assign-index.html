@@ -3,11 +3,11 @@
     <th>{{vm.runs.columns[0]}}</th>
     <th>{{vm.runs.columns[1]}}</th>
     <th>Assigned Personel</th>
-    <tr ng-repeat="row in vm.runs.rows">
+    <tr dir-paginate="row in vm.runs.rows | itemsPerPage: 10">
         <td>{{row[0]}}</td>
         <td>{{row[1]}}</td>
         <td style="width:70%">
-  <ui-select multiple ng-model="selectedItem">
+  <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item.id, row[0] + row[1], $item.name)" on-remove="deleteAssignment($item.id, row[0] + row[1])">
     <ui-select-match>
         <span ng-bind="$item.name"></span>
     </ui-select-match>
@@ -18,4 +18,5 @@
         </td>
     </tr>
 </table>
+<dir-pagination-controls></dir-pagination-controls>
 </div>

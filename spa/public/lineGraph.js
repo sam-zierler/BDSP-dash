@@ -26,7 +26,6 @@ function chartInit(elem, objData) {
 		d.value = d[4];
 		data.push({date:d.date,value:parseInt(d.value)});
 	});
-	console.log(data);
 	// Set the ranges
 	var x = d3.scaleTime().range([0, width]);
 	var y = d3.scaleLinear().range([height, 0]);

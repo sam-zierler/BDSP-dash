@@ -1,35 +1,73 @@
 angular.module('app')
-    .controller('assignController', function($http, $location, $scope) {
+    .controller('assignController', function($http, $location, $scope, $q, ftToArr) {
         var self = this;
-        $http.get("/employees")
+        $scope.itemArray = [];
+        $http.get("/employees", {cache: true})
             .success(function(data) {
-                self.rows = data;
-                console.log(self.rows);
-                self.rows.rows.forEach(function(d) {
+                self.empl = data;
+                self.empl = ftToArr.convert(data);
+                self.empl.forEach(function(d) {
                     $scope.itemArray.push({
-                        id: d[3],
-                        name: d[0] + " " + d[1]
+                        id: d.ID,
+                        name: d.FirstName + " " + d.LastName
                     });
                 });
-                console.log($scope.itemArray);
             })
-        $http.get("/runs")
-            .success(function(data) {
-                self.runs = data;
+            .then($http.get("/runs", {cache: true})
+                .success(function(data) {
+                    self.runs = data;
+                    self.runs.rows.forEach(function(d) {
+                        var rID = "" + d[0] + d[1];
+                        var result;
+                        var promise = getAssignments(rID)
+                        promise.then(
+                            function(res) {
+                                res.forEach(function(d) {
+                                    d.id = d.empl_id;
+                                })
+                                var result = res;
+                                d.assigned = result;
+                            },
+                            function(fail) {
+                                console.log("FAIL");
+                            });
+                    });
+                })
+            ).then(function() {
+                //$scope.itemArray = [];
+                
             });
-        var i = 0;
-        $scope.itemArray = [];
+        $scope.saveAssignment = function(empl, run, name) {
+            var row = {
+                empl_id: empl,
+                run_id: run,
+                name
+            };
+            $http.post("/assignments", row)
+                .success(function(data) {
+                    console.log("SAVED")
+                });
+        }
+        $scope.deleteAssignment = function(empl, run) {
+            var row = {
+                empl_id: empl,
+                run_id: run
+            };
+            $http.post("/assignments/delete", row)
+                .success(function(data) {
+                    console.log("Deleted")
+                });
+        }
+        function getAssignments(run_id) {
+            return $q(function(resolve, reject) {
+                $http.get("/assignments/" + run_id)
+                    .success(function(data) {
+                        resolve(data);
 
-        /*
-        $scope.selected = { id : 0, name : "Jess2e" };
-           $scope.itemArray = [
-        {id: 1, name: 'first'},
-        {id: 2, name: 'second'},
-        {id: 3, name: 'third'},
-        {id: 4, name: 'fourth'},
-        {id: 5, name: 'fifth'},
-    ];*/
-
-        $scope.selectedItems = [];
-
+                    })
+                    .error(function(data){
+                        reject("NOPE");
+                    })
+            })
+        }
     })

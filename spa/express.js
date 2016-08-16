@@ -3,6 +3,7 @@ var express = require('express'),
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var runs = require('./Model/runs.js');
+var assignments = require('./Model/assignments.js');
 var employees = require('./Model/employees.js');
 
 console.log(__dirname + '/public');
@@ -27,5 +28,25 @@ app.get("/runs", function(req,res) {
     employees.get(function(err,rows){
         res.send(rows);
     })
+})
+.get("/assignments", function(req,res) {
+    assignments.get(null, function(err,rows){
+        res.send(rows);
+    })
+})
+.get("/assignments/:run_id", function(req,res) {
+   assignments.get(req.params.run_id, function(err, rows){
+    res.send(rows);
+  })
+})
+.post("/assignments", function(req, res) {
+    assignments.save(req.body, function(err, row) {
+        res.send(row);
+    })
+})
+.post("/assignments/delete", function(req, res) {
+    assignments.delete(req.body, function(err, row){
+        res.send(row);
+    });
 })
 app.listen(process.env.PORT);

@@ -33,7 +33,6 @@ angular.module('deisingj1.directives', []).directive('barGraph', function() {
                 data = newValue;
                 element[0].setAttribute("style", "display:inline-block;width:100%; height: 100%;");
                 //converting all data passed thru into an array
-                console.log(data);
                 if(typeof data !== 'undefined') {
                     chartInit(element[0], data);
                 }

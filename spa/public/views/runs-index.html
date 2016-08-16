@@ -9,11 +9,11 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="startDate">Start Date</label>
-                        <input class="uiElement form-control" type="date" id="startDate">
+                        <input ng-model="search.start" class="uiElement form-control" id="startDate" type="text">
                     </div>
                     <div class="form-group">
                         <label for="endDate">End Date</label>
-                        <input class="uiElement form-control" type="date" id="endDate">
+                        <input ng-model="search.end" class="uiElement form-control" id="endDate">
                     </div>
                 </form>
                 <hr>
@@ -30,24 +30,18 @@
                     <th>Distance (mi)</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in vm.rows.rows track by $index">
-                        <td ng-repeat="col in row track by $index">{{col}}</td>
+                    <tr dir-paginate="row in vm.rows |  dateRange:search.start:search.end | itemsPerPage: 10 ">
+                        <td>{{row.truckID}}</td>
+                        <td>{{row.start}}</td>
+                        <td>{{row.end}}</td>
+                        <td>{{row.run}}</td>
+                        <td>{{row.tons}}</td>
+                        <td>{{row.distance}}</td>
                     </tr>
                 </tbody>
             </table>
             </div>
-            
         </div>
+            <dir-pagination-controls></dir-pagination-controls>
 
     </div>
-    <script>
-        $().ready(function() {
-            $("#run-table").click(function(event) {
-                var parent = event.parentElement;
-                console.log(parent);
-                console.log(event);
-                jEvent = event;
-            });
-        });
-        $('[data-toggle="popover"]').popover();
-    </script>
