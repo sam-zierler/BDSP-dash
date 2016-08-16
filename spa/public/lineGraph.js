@@ -1,9 +1,8 @@
 //Creates line graph in D3
-function chartInit(elem, objData) {
+function chartInit(elem, data) {
 
 	elem.innerHTML = "";
-	data = [];
-
+	
 	// Set the dimensions of the canvas / graph
 	pWidth = elem.clientWidth - 20;
 	hWidth = elem.clientHeight - 20;
@@ -20,12 +19,11 @@ function chartInit(elem, objData) {
 	// Parse the date / time
 	var parseDate = d3.timeParse("%d-%b-%y");
 	// Get the data
-	//data = eval('(' + data + ')');
-	objData.forEach(function(d) {
-		d.date = new Date.parse(d[1]);
-		d.value = d[4];
-		data.push({date:d.date,value:parseInt(d.value)});
+	data.forEach(function(d) {
+		d.date = moment(d.start).toDate();
+		d.tons = parseInt(d.tons);
 	});
+	
 	// Set the ranges
 	var x = d3.scaleTime().range([0, width]);
 	var y = d3.scaleLinear().range([height, 0]);
@@ -36,7 +34,7 @@ function chartInit(elem, objData) {
 			return x(d.date);
 		})
 		.y(function(d) {
-			return y(d.value);
+			return y(d.tons);
 		});
 
 	// Adds the svg canvas
@@ -57,9 +55,8 @@ function chartInit(elem, objData) {
 		return d.date;
 	}));
 	y.domain([0, d3.max(data, function(d) {
-		return d.value;
+		return d.tons;
 	})]);
-
 	// Add the valueline path.
 	svg.append("path")
 		.attr("class", "line")
@@ -74,7 +71,7 @@ function chartInit(elem, objData) {
 	svg.append("g")
 		.attr("class", "yaxis");
 
-	groupBy = "day";
+	groupBy = "week";
 	switch (groupBy) {
 		case "week":
 			d3.select(".xaxis")
