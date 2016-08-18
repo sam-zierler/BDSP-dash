@@ -1,3 +1,12 @@
+/*!
+ * Start Bootstrap - SB Admin 2 (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ *
+ * Edits made by Jesse Deisinger to correct behavior when used with AngularJS 8/18/16
+ *
+ */
+
 $(function() {
 
     //$('#side-menu').metisMenu();
@@ -33,7 +42,12 @@ $(function() {
     var element = $('ul.nav a').filter(function() {
      return this.href == url;
     }).addClass('active').parent();
-
+    // Jesse edit to make work with angular
+    $('ul.nav a').click(function() {
+        $('ul.nav a').removeClass('active').parent();
+        $(this).addClass('active').parent();
+    });
+    //end edit
     while(true){
         if (element.is('li')){
             element = element.parent().addClass('in').parent();

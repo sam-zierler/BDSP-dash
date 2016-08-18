@@ -9,17 +9,9 @@
     <div class="col-md-4">
         <!-- Small panel -->
         <div class="col-md-12 col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading heading-right-t">
-                    Map:
-                </div>
-                <div class="panel-body">
-                    <!--<iframe style="width:100%; height:500px" scrolling="no" frameborder="no" src="https://fusiontables.google.com/embedviz?q=select+col4+from+1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ&amp;viz=MAP&amp;h=false&amp;lat=41.740735268526784&amp;lng=-74.08226682245731&amp;t=1&amp;z=20&amp;l=col4&amp;y=2&amp;tmplt=4&amp;hml=KML"></iframe> -->
-                    <!--<img src="res/map1.png" style="width:100%"></img> -->
-                    <gmaps query="gmQuery"></gmaps>
-                </div>
-                </a>
-            </div>
+            <s-panel header="Map:">
+                <gmap id="mapdiv" query="gmQuery"></gmap>
+            </s-panel>
         </div>
     </div>
     <div class="col-md-8">
@@ -78,42 +70,21 @@
         </div>
         <div class="row">
             <div class="col-lg-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading heading-right-t">Daily Totals:</div>
-                    <div class="panel-body">
-                        <bars-chart id="bar-chart" data="rows"></bars-chart>
-                    </div>
-                </div>
+                <s-panel header="Daily Totals:">
+                    <line-graph data="vm.dailyAverages">
+                        </bars-chart>
+                </s-panel>
             </div>
             <div class="col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading heading-right-t">Average Run:</div>
-                    <div class="panel-body">
-                        <div id="avgGauge"></div>
-                        <div id="avg2Gauge"></div>
-                    </div>
-                </div>
+                <s-panel header="Average Run:">
+                    <gauge value="74" title="Weekly"></gauge>
+                    <gauge value="10" title="No good"></gauge>
+                </s-panel>
             </div>
         </div>
     </div>
+
 </div>
+<div class="row">
 
-<script>
-
-    var g = new JustGage({
-        id: "avgGauge",
-        value: 67,
-        min: 0,
-        max: 100,
-        levelColors: ["#FF0000", "#FFFF00", "#00FF00"],
-        title: "This week"
-    });
-    var g2 = new JustGage({
-        id: "avg2Gauge",
-        value: 23,
-        min: 0,
-        max: 100,
-        levelColors: ["#FF0000", "#FFFF00", "#00FF00"],
-        title: "Lifetime"
-    });
-</script>
+</div>

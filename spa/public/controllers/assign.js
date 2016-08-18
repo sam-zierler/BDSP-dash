@@ -27,16 +27,20 @@ angular.module('app')
                                 })
                                 var result = res;
                                 d.assigned = result;
+                                if(d.assigned.length == 0) {
+                                    d.isAssigned = false;
+                                }
+                                else {
+                                    d.isAssigned = true;
+                                }
                             },
                             function(fail) {
                                 console.log("FAIL");
                             });
                     });
+                    $scope.runrows = self.runs.rows;
                 })
-            ).then(function() {
-                //$scope.itemArray = [];
-                
-            });
+            );
         $scope.saveAssignment = function(empl, run, name) {
             var row = {
                 empl_id: empl,
