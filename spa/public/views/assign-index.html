@@ -9,10 +9,10 @@
             <th>Date/Time</th>
             <th>Assigned Personnel</th>
             <tr dir-paginate="row in runrows | showAssigned:showAssignedValue | itemsPerPage: 10" ng-model-options="{debounce: 1000}">
-                <td>{{row[0]}}</td>
-                <td>{{row[1]}}</td>
+                <td>{{row.truckID}}</td>
+                <td>{{row.start}}</td>
                 <td style="width:70%">
-                    <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item.id, row[0] + row[1], $item.name)" on-remove="deleteAssignment($item.id, row[0] + row[1])">
+                    <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item.id, row.truckID + row.start, $item.name)" on-remove="deleteAssignment($item.id, row.truckID + row.start)">
                         <ui-select-match>
                             <span ng-bind="$item.name"></span>
                         </ui-select-match>

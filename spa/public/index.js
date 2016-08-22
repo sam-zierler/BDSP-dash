@@ -1,4 +1,4 @@
-angular.module('app', ['ngRoute', 'ui.select', 'angularUtils.directives.dirPagination', 'ngSanitize', 'd3graphs.directives', 'gmaps.directives', 'panels.directives'])
+angular.module('app', ['ngRoute', 'ui.select', 'angularUtils.directives.dirPagination', 'ngSanitize', 'd3graphs.directives', 'gmaps.directives', 'panels.directives', 'moment-picker'])
 			.config(function($routeProvider, $httpProvider) {
 				$routeProvider.
 				when('/runs', {
@@ -19,6 +19,11 @@ angular.module('app', ['ngRoute', 'ui.select', 'angularUtils.directives.dirPagin
 				when('/assign', {
 					templateUrl: 'views/assign-index.html',
 					controller: 'assignController',
+					controllerAs: 'vm'
+				}).
+				when('/stats', {
+					templateUrl: 'views/stats-index.html',
+					controller: 'statsController',
 					controllerAs: 'vm'
 				}).
 				otherwise({

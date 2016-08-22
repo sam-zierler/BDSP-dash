@@ -77,8 +77,9 @@
             </div>
             <div class="col-lg-3">
                 <s-panel header="Average Run:">
-                    <gauge value="74" title="Weekly"></gauge>
-                    <gauge value="10" title="No good"></gauge>
+                    <gauge value="weekAvg()" max-Value="30" min-Value="10" title="Last Week"></gauge>
+                    <gauge value="23" title="Lifetime" max-Value="50" min-Value="0"></gauge>
+                    <gauge value="10" title="Lifetime"></gauge>
                 </s-panel>
             </div>
         </div>

@@ -1,13 +1,13 @@
 <div class="panel panel-default" style="margin-top:15px">
 <table class="table table-hover">
-    <th>{{vm.rows.columns[0]}}</th>
-    <th>{{vm.rows.columns[1]}}</th>
-    <th>{{vm.rows.columns[2]}}</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Rate</th>
 
-    <tr ng-repeat="row in vm.rows.rows">
-        <td>{{row[0]}}</td>
-        <td>{{row[1]}}</td>
-        <td>{{row[2]}}</td>
+    <tr ng-repeat="row in vm.rows">
+        <td>{{row.FirstName}}</td>
+        <td>{{row.LastName}}</td>
+        <td>{{row.Rate}}</td>
     </tr>
 </table>
 </div>
