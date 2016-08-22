@@ -1,22 +1,25 @@
 angular.module('app')
-    .controller('summaryController', function($scope, ftToArr, calcAverages, getFusionTable) {
+    .controller('summaryController', function($scope, ftToArr, calcAverages, getFusionTable, calcSums) {
         var self = this;
         var promise = getFusionTable.runsTable();
         promise.then(function(result) {
                 self.rows = result;
                 self.dailyAverages = calcAverages.dailyAverages(self.rows);
                 self.weeklyAvgs = calcAverages.weeklyAverages(self.rows);
+                $scope.lifeTimeAverage = calcAverages.lifeTimeAverage(self.rows);
+                $scope.totalForWeek = calcSums.lifetime(self.rows);
             },
             function(result) {
                 self.rows = undefined
             }
         );
         $scope.weekAvg = function() {
-                if(typeof self.weeklyAvgs !== 'undefined') {
-                    return self.weeklyAvgs[self.weeklyAvgs.length - 1].value;
-                }
-                else return 0;
-            };
+            if (typeof self.weeklyAvgs !== 'undefined') {
+                return self.weeklyAvgs[self.weeklyAvgs.length - 1].value;
+            }
+            else return 0;
+        };
+
         var weekStart = moment().startOf('week').format("YYYY-MM-DD hh:mm:ss");
         var weekNow = moment().format("YYYY-MM-DD hh:mm:ss");
         $scope.gmQuery = {
