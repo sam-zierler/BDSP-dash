@@ -18,7 +18,7 @@
 
         <div class="row">
             <!-- Small panel -->
-            <div class="col-md-12 col-lg-6">
+            <div ng-if="ftService.unassignedQuantity" class="col-md-12 col-lg-6">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
                         <div class="row">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="heading-right-t">
-                                    3
+                                    {{ftService.unassignedQuantity}}
                                 </div>
                                 <div class="heading-right-b">
                                     Unassigned runs
@@ -70,7 +70,7 @@
         </div>
         <div class="row">
             <div class="col-lg-9">
-                <s-panel header="Daily Totals:">
+                <s-panel header="Daily Averages:">
                     <line-graph data="vm.dailyAverages">
                         </bars-chart>
                 </s-panel>

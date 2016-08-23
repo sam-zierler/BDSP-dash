@@ -20,28 +20,6 @@ angular.module('app')
             promise2.then(
                 function(data) {
                     self.runs = data;
-                    data.forEach(function(d) {
-                        var rID = "" + d.truckID + d.start;
-                        var result;
-                        var promise = getAssignments(rID);
-                        promise.then(
-                            function(res) {
-                                res.forEach(function(d) {
-                                    d.id = d.empl_id;
-                                })
-                                var result = res;
-                                d.assigned = result;
-                                if (d.assigned.length == 0) {
-                                    d.isAssigned = false;
-                                }
-                                else {
-                                    d.isAssigned = true;
-                                }
-                            },
-                            function(fail) {
-                                console.log("FAIL");
-                            });
-                    });
                     $scope.runrows = self.runs;
                 },
                 function(result) {

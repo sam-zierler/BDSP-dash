@@ -7,10 +7,11 @@ angular.module('app')
                 self.dailyAverages = calcAverages.dailyAverages(self.rows);
                 self.weeklyAvgs = calcAverages.weeklyAverages(self.rows);
                 $scope.lifeTimeAverage = calcAverages.lifeTimeAverage(self.rows);
-                $scope.totalForWeek = calcSums.lifetime(self.rows);
+                $scope.totalForWeek = calcSums.lifetime(self.rows);                
+                $scope.ftService = getFusionTable;
             },
             function(result) {
-                self.rows = undefined
+                self.rows = undefined;
             }
         );
         $scope.weekAvg = function() {
@@ -19,7 +20,6 @@ angular.module('app')
             }
             else return 0;
         };
-
         var weekStart = moment().startOf('week').format("YYYY-MM-DD hh:mm:ss");
         var weekNow = moment().format("YYYY-MM-DD hh:mm:ss");
         $scope.gmQuery = {
