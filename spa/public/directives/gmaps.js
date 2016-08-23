@@ -1,5 +1,6 @@
 angular.module('gmaps.directives', []).directive('gmap', function($parse) {
     var query;
+    var height;
 
     function gmaps_create(elem, mQuery) {
         google.maps.visualRefresh = true;
@@ -54,12 +55,14 @@ angular.module('gmaps.directives', []).directive('gmap', function($parse) {
         replace: false,
         controller: function($scope) {
             query = $scope.query;
+            height = $scope.height;
         },
         scope: {
-            query: '='
+            query: '=',
+            height: '@'
         },
         link: function(scope, element, attrs) {
-            element[0].style.height = '500px';
+            element[0].style.height = height;
             element[0].style.display = "block";
             gmaps_create(element[0], query);
             scope.$watch('query', function(newValue, oldValue) {
