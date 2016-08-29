@@ -67,4 +67,16 @@ angular.module('app')
             }
             return total;
         }
+        this.employeeCost = function(run) {
+            var total = 0;
+            if(run.isAssigned) {
+                run.assigned.forEach(function(d) {
+                    total += Math.ceil(run.duration / 3600) * d.rate;
+                });
+                return total;
+            }
+            else {
+                return 0;
+            }
+        }
     })

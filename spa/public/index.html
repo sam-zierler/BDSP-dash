@@ -25,7 +25,10 @@
 		#page-wrapper {
 			overflow: auto;
 		}
-		
+		.nav-vertical-fill {
+			height:100%;
+			display: block;
+		}
 		.scrollable {
 			height: 100%;
 			overflow-y: auto;
@@ -48,7 +51,6 @@
 			stroke-width: 1;
 			shape-rendering: crispEdges;
 		}
-		
 		.bar text {
 			fill: black;
 		}
@@ -101,8 +103,8 @@
 			</li>
 		</ul>
 	</nav>
-	<div class="navbar-default sidebar">
-		<div class="sidebar-nav navbar-collapse" style="margin-top: 0px;">
+	<div class="navbar-default sidebar nav-vertical-fill">
+		<div class="sidebar-nav navbar-collapse nav-vertical-fill" style="margin-top: 0px;">
 			<img class="img img-nav" src="res/seal.jpg" />
 			<ul class="nav in" id="side-menu">
 				<li role="presentation"><a href="#/summary"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>	Summary</a></li>

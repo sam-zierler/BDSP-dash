@@ -3,7 +3,7 @@
         Assign Runs:
     </div>
     <div class="panel-body">
-        Show Assigned Runs <input type="checkbox" ng-model="showAssignedValue" ng-click="" value="Show Assigned Runs" \>
+        Show Assigned Runs <input type="checkbox" ng-model="showAssignedValue" checked="checked" value="Show Assigned Runs" \>
         <table class="table table-hover" style="table-layout:auto">
             <th>Truck ID</th>
             <th>Date/Time</th>
@@ -12,7 +12,7 @@
                 <td>{{row.truckID}}</td>
                 <td>{{row.start}}</td>
                 <td style="width:70%">
-                    <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item.id, row.truckID + row.start, $item.name)" on-remove="deleteAssignment($item.id, row.truckID + row.start)">
+                    <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item, $index)" on-remove="deleteAssignment($item.id, $index)">
                         <ui-select-match>
                             <span ng-bind="$item.name"></span>
                         </ui-select-match>

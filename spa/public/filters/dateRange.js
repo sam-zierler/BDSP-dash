@@ -2,6 +2,9 @@ angular.module('app')
     .filter('dateRange', function() {
         return function(input, min, max) {
             var out = [];
+            if(min === '' || typeof min === 'undefined') {
+                min = "2016";
+            }
             var minDate = moment(min);
             var maxDate = moment(max).add(1, 'd');
             angular.forEach(input, function(d) {

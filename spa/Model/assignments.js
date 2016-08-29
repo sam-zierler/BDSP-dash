@@ -12,7 +12,7 @@ module.exports = {
             });
         }
         else {
-            var sql = 'SELECT empl_id, name from gc where run_id=?';
+            var sql = 'SELECT empl_id, rate, name from gc where run_id=?';
             conn.query(sql, [run_id], 
                   function(err, rows){
                   ret(err, rows);
@@ -24,9 +24,9 @@ module.exports = {
     save: function(row, ret) {
         var conn = GetConnection();
         var sql = "INSERT INTO gc "
-            + "(run_id, empl_id, name) "
-            + "values (?, ?, ?);" ;
-        conn.query(sql, [row.run_id, row.empl_id, row.name], 
+            + "(run_id, empl_id, name, rate) "
+            + "values (?, ?, ?, ?);" ;
+        conn.query(sql, [row.run_id, row.empl_id, row.name, row.rate], 
             function(err, data){
             ret(err, row);
             conn.end();

@@ -2,13 +2,15 @@ angular.module('app')
     .controller('assignController', function($http, $scope, $q, getFusionTable) {
         var self = this;
         $scope.itemArray = [];
+        $scope.showAssignedValue = true
         var promise = getFusionTable.emplTable();
         promise.then(function(result) {
                 self.empl = result;
                 self.empl.forEach(function(d) {
                     $scope.itemArray.push({
                         id: d.ID,
-                        name: d.FirstName + " " + d.LastName
+                        name: d.FirstName + " " + d.LastName,
+                        rate: d.Rate
                     });
                 });
             },
@@ -27,21 +29,23 @@ angular.module('app')
                 }
             );
         });
-        $scope.saveAssignment = function(empl, run, name) {
+        $scope.saveAssignment = function(empl, index) {
             var row = {
-                empl_id: empl,
-                run_id: run,
-                name
+                empl_id: empl.id,
+                run_id: self.runs[index].truckID + self.runs[index].start,
+                name: empl.name,
+                rate: Number(empl.rate).toFixed(2)
             };
             $http.post("/assignments", row)
                 .success(function(data) {
                     console.log("SAVED")
+                    self.runs[index].assigned = true;
                 });
         }
-        $scope.deleteAssignment = function(empl, run) {
+        $scope.deleteAssignment = function(empl, index) {
             var row = {
                 empl_id: empl,
-                run_id: run
+                run_id: self.runs[index].truckID + self.runs[index].start
             };
             $http.post("/assignments/delete", row)
                 .success(function(data) {

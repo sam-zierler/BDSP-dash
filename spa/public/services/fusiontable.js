@@ -17,18 +17,16 @@ angular.module('app')
         this.empl_table = [];
         this.runs_table = [];
         var self = this;
-        //self.unassignedQuantity = 0;
 
         self.getUnassignedQuantity = function() {
             return self.unassignedQuantity;
         }
 
-        function getAssignments(run_id) {
+        this.getAssignments = function(run_id) {
             return $q(function(resolve, reject) {
                 $http.get("/assignments/" + run_id)
                     .success(function(data) {
                         resolve(data);
-
                     })
                     .error(function(data) {
                         reject("NOPE");
@@ -43,9 +41,19 @@ angular.module('app')
                             self.runs_table = ftToArr.convert(data);
                             var localUnassignedQuantity = 0;
                             self.runs_table.forEach(function(d) {
+                                d.duration = (moment(d.end).valueOf() - moment(d.start).valueOf()) / 1000;
+                                var hr = parseInt(d.duration / 3600) + "";
+                                var min = Math.ceil((d.duration % 3600)/60) + "";
+                                if(hr.length < 2) {
+                                    hr = "0" + hr;
+                                }
+                                if(min.length < 2) {
+                                    min = "0" + min;
+                                }
+                                d.duration_string = hr + ":" + min;
                                 var rID = "" + d.truckID + d.start;
                                 var result;
-                                var promise = getAssignments(rID);
+                                var promise = self.getAssignments(rID);
                                 promise.then(
                                     function(res) {
                                         res.forEach(function(d) {
