@@ -28,7 +28,7 @@
                     <th>Distance (mi)</th>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="row in vm.rows |  dateRange:search.start:search.end | itemsPerPage: 10 ">
+                    <tr dir-paginate="row in vm.rows |  dateRange:search.start:search.end | itemsPerPage: 10">
                         <td>{{row.truckID}}</td>
                         <td>{{row.start}}</td>
                         <td>{{row.duration_string}}</td>

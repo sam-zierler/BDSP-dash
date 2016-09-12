@@ -14,8 +14,8 @@ angular.module('gmaps.directives', []).directive('gmap', function($parse) {
         //mapDiv.style.width = isMobile ? '100%' : '500px';
 
         var map = new google.maps.Map(mapDiv, {
-            center: new google.maps.LatLng(41.740663487976036, -74.08123282818212),
-            zoom: 17,
+            center: new google.maps.LatLng(41.700174, -73.920869),
+            zoom: 13,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));

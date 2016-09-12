@@ -29,23 +29,23 @@ angular.module('app')
                 }
             );
         });
-        $scope.saveAssignment = function(empl, index) {
+        $scope.saveAssignment = function(empl, run) {
             var row = {
                 empl_id: empl.id,
-                run_id: self.runs[index].truckID + self.runs[index].start,
+                run_id: run.truckID + run.start,
                 name: empl.name,
                 rate: Number(empl.rate).toFixed(2)
             };
             $http.post("/assignments", row)
                 .success(function(data) {
                     console.log("SAVED")
-                    self.runs[index].assigned = true;
+                    run.isAssigned = true;
                 });
         }
-        $scope.deleteAssignment = function(empl, index) {
+        $scope.deleteAssignment = function(empl, run) {
             var row = {
                 empl_id: empl,
-                run_id: self.runs[index].truckID + self.runs[index].start
+                run_id: run.truckID + run.start
             };
             $http.post("/assignments/delete", row)
                 .success(function(data) {

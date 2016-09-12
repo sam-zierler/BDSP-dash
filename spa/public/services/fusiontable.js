@@ -74,7 +74,6 @@ angular.module('app')
                                         console.log("FAIL");
                                     });
                             });
-                            console.log("Had to get table runs");
                             resolve(self.runs_table);
                         });
                 });
@@ -88,7 +87,6 @@ angular.module('app')
                     $http.get("/employees")
                         .success(function(data) {
                             self.empl_table = ftToArr.convert(data);
-                            console.log("Had to get table empl");
                             resolve(self.empl_table);
                         });
                 });

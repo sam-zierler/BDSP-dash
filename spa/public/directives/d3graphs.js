@@ -60,6 +60,18 @@ angular.module('d3graphs.directives', []).directive('lineGraph', function($parse
             return d.value;
         })]);
         // Add the valueline path.
+        for(var i = 0; i < data.length; i++) {
+            if(isNaN(data[i].value)) {
+                data.splice(i, 1);
+            }
+            if(data[i].date == "Invalid Date") {
+                data.splice(i, 1);
+            }
+        }
+        if(valueline(data).includes("NaN")) {
+            console.log("NaN error with graph");
+            return false;
+        } 
         svg.append("path")
             .attr("class", "line")
             .attr("d", valueline(data));

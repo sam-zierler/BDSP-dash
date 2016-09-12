@@ -12,7 +12,7 @@
                 <td>{{row.truckID}}</td>
                 <td>{{row.start}}</td>
                 <td style="width:70%">
-                    <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item, $index)" on-remove="deleteAssignment($item.id, $index)">
+                    <ui-select multiple ng-model="row.assigned" on-select="saveAssignment($item, row)" on-remove="deleteAssignment($item.id, row)">
                         <ui-select-match>
                             <span ng-bind="$item.name"></span>
                         </ui-select-match>
