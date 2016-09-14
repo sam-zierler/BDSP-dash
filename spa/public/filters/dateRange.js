@@ -3,7 +3,7 @@ angular.module('app')
         return function(input, min, max) {
             var out = [];
             if(min === '' || typeof min === 'undefined') {
-                min = "2016";
+                min = '2016';
             }
             var minDate = moment(min);
             var maxDate = moment(max).add(1, 'd');

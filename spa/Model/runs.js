@@ -16,8 +16,11 @@ module.exports = {
         conn.query.sql({sql:"SELECT 'start', 'tons', 'end' FROM " + tonsTableId + " where 'start' >= " + start + " AND 'start' <= " + end + " ORDER BY 'start'", auth:API_KEY}, function(err, res) {
             ret(err, res);
         });
+    },
+    change: function(id, ret) {
+        tonsTableId = id;
+        ret(true);
     }
-    
 };
 
 function getConnection() {

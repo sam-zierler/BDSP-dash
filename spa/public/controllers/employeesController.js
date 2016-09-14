@@ -3,7 +3,7 @@ angular.module('app')
         var self = this;
         var promise = getFusionTable.emplTable();
         promise.then(function(result) { self.rows = result; }, 
-            function(result) { self.rows = undefined } 
+            function(result) { self.rows = undefined; } 
         );
         
     });

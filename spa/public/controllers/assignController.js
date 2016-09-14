@@ -2,20 +2,20 @@ angular.module('app')
     .controller('assignController', function($http, $scope, $q, getFusionTable) {
         var self = this;
         $scope.itemArray = [];
-        $scope.showAssignedValue = true
+        $scope.showAssignedValue = true;
         var promise = getFusionTable.emplTable();
         promise.then(function(result) {
                 self.empl = result;
                 self.empl.forEach(function(d) {
                     $scope.itemArray.push({
                         id: d.ID,
-                        name: d.FirstName + " " + d.LastName,
+                        name: d.FirstName + ' ' + d.LastName,
                         rate: d.Rate
                     });
                 });
             },
             function(result) {
-                self.empl = undefined
+                self.empl = undefined;
             }
         ).then(function() {
             var promise2 = getFusionTable.runsTable();
@@ -31,38 +31,38 @@ angular.module('app')
         });
         $scope.saveAssignment = function(empl, run) {
             var row = {
-                empl_id: empl.id,
-                run_id: run.truckID + run.start,
+                emplId: empl.id,
+                runId: run.truckID + run.start,
                 name: empl.name,
                 rate: Number(empl.rate).toFixed(2)
             };
-            $http.post("/assignments", row)
+            $http.post('/assignments', row)
                 .success(function(data) {
-                    console.log("SAVED")
+                    console.log('SAVED');
                     run.isAssigned = true;
                 });
-        }
+        };
         $scope.deleteAssignment = function(empl, run) {
             var row = {
-                empl_id: empl,
-                run_id: run.truckID + run.start
+                emplId: empl,
+                runId: run.truckID + run.start
             };
-            $http.post("/assignments/delete", row)
+            $http.post('/assignments/delete', row)
                 .success(function(data) {
-                    console.log("Deleted")
+                    console.log('Deleted');
                 });
-        }
+        };
 
-        function getAssignments(run_id) {
+        function getAssignments(runId) {
             return $q(function(resolve, reject) {
-                $http.get("/assignments/" + run_id)
+                $http.get('/assignments/' + runId)
                     .success(function(data) {
                         resolve(data);
 
                     })
                     .error(function(data) {
-                        reject("NOPE");
-                    })
-            })
+                        reject('NOPE');
+                    });
+            });
         }
-    })
+    });

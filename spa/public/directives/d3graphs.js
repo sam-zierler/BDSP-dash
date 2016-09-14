@@ -1,13 +1,27 @@
-angular.module('d3graphs.directives', []).directive('lineGraph', function($parse) {
+angular.module('d3graphs.directives', [])
+
+/** -----------------lineGraph directive----------------
+ * 
+ * This directive creates a line graph where the data
+ * that the line graph represents is passed through 
+ * the html attribute 'data'
+ * 
+ * Passed data must be contained within an array, and
+ * must be composed of an array of objects with 
+ * two properties, date (Javascript date), and value (number)
+ * 
+ * ------------------------------------------------------*/
+ 
+.directive('lineGraph', function($parse) {
     var data;
     
     function graphInit(elem, data) {
 
-        elem.innerHTML = "";
+        elem.innerHTML = '';
 
         // Set the dimensions of the canvas / graph
-        pWidth = elem.clientWidth - 20;
-        hWidth = elem.clientHeight - 20;
+        var pWidth = elem.clientWidth - 20;
+        var hWidth = elem.clientHeight - 20;
         var margin = {
                 top: 30,
                 right: 20,
@@ -19,7 +33,7 @@ angular.module('d3graphs.directives', []).directive('lineGraph', function($parse
 
 
         // Parse the date / time
-        var parseDate = d3.timeParse("%d-%b-%y");
+        var parseDate = d3.timeParse('%d-%b-%y');
         // Get the data
         data.forEach(function(d) {
             d.date = moment(d.date).toDate();
@@ -41,16 +55,16 @@ angular.module('d3graphs.directives', []).directive('lineGraph', function($parse
 
         // Adds the svg canvas
         var svg = d3.select(elem)
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            //.attr("preserveAspectRatio","xMidYMid meet")
-            .attr("id", "chart")
-            .append("g")
-            .attr("id", "chartArea")
-            .attr("width", width)
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            //.attr('preserveAspectRatio','xMidYMid meet')
+            .attr('id', 'chart')
+            .append('g')
+            .attr('id', 'chartArea')
+            .attr('width', width)
+            .attr('transform',
+                'translate(' + margin.left + ',' + margin.top + ')');
 
 
         x.domain(d3.extent(data, function(d) {
@@ -64,46 +78,46 @@ angular.module('d3graphs.directives', []).directive('lineGraph', function($parse
             if(isNaN(data[i].value)) {
                 data.splice(i, 1);
             }
-            if(data[i].date == "Invalid Date") {
+            if(data[i].date === 'Invalid Date') {
                 data.splice(i, 1);
             }
         }
-        if(valueline(data).includes("NaN")) {
-            console.log("NaN error with graph");
+        if(valueline(data).includes('NaN')) {
+            console.log('NaN error with graph');
             return false;
         } 
-        svg.append("path")
-            .attr("class", "line")
-            .attr("d", valueline(data));
+        svg.append('path')
+            .attr('class', 'line')
+            .attr('d', valueline(data));
         // Add the X Axis
-        svg.append("g")
-            .attr("class", "xaxis")
-            .attr("transform", "translate(0," + height + ")");
+        svg.append('g')
+            .attr('class', 'xaxis')
+            .attr('transform', 'translate(0,' + height + ')');
 
 
         // Add the Y Axis
-        svg.append("g")
-            .attr("class", "yaxis");
+        svg.append('g')
+            .attr('class', 'yaxis');
 
-        groupBy = "week";
+        var groupBy = 'week';
         switch (groupBy) {
-            case "week":
-                d3.select(".xaxis")
+            case 'week':
+                d3.select('.xaxis')
                     .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)));
                 break;
-            case "month":
-                d3.select(".xaxis")
+            case 'month':
+                d3.select('.xaxis')
                     .call(d3.axisBottom(x).ticks(d3.timeMonth.every(1)));
                 break;
             default:
-                d3.select(".xaxis")
+                d3.select('.xaxis')
                     .call(d3.axisBottom(x).ticks(d3.timeDay.every(1)));
         }
-        d3.select(".yaxis")
+        d3.select('.yaxis')
             .call(d3.axisLeft(y));
     }
     return {
-        restrict: 'E',
+        restict: 'E',
         replace: false,
         controller: function($scope) {
             data = $scope.data;
@@ -114,12 +128,12 @@ angular.module('d3graphs.directives', []).directive('lineGraph', function($parse
         link: function(scope, element, attrs) {
             scope.$watch('data', function(newValue, oldValue) {
                 data = newValue;
-                element[0].setAttribute("style", "display:inline-block;width:100%; height: 100%;");
+                element[0].setAttribute('style', 'display:inline-block;width:100%; height: 100%;');
                 //converting all data passed thru into an array
                 if (typeof data !== 'undefined') {
                     graphInit(element[0], data);
                 }
             });
         }
-    }
+    };
 });

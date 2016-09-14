@@ -1,8 +1,10 @@
-angular.module('panels.directives', []).directive('sPanel', function() {
+angular.module('panels.directives', [])
+
+.directive('sPanel', function() {
     return {
         transclude: true,
         controller: function($scope) {
-            header = $scope.header;
+            var header = $scope.header;
         },
         scope: {
             header: '@'
@@ -11,8 +13,9 @@ angular.module('panels.directives', []).directive('sPanel', function() {
             scope.header = attrs.header;
         },
         templateUrl: 'directives/templates/panel.html'
-    }
-}).directive('gauge', function() {
+    };
+})
+.directive('gauge', function() {
     return {
         replace: false,
         controller: function($scope) {
@@ -40,16 +43,16 @@ angular.module('panels.directives', []).directive('sPanel', function() {
                 scope.title = attrs.title;
                 scope.minValue = attrs.minValue;
                 scope.maxValue = attrs.maxValue;
-                element[0].innerHTML = "";
+                element[0].innerHTML = '';
                 var g = new JustGage({
                     parentNode: element[0],
                     value: scope.value,
                     min: attrs.minValue,
                     max: attrs.maxValue,
-                    levelColors: ["#FF0000", "#FFFF00", "#00FF00"],
+                    levelColors: ['#FF0000', '#FFFF00', '#00FF00'],
                     title: scope.title
                 });
-            })
+            });
         }
-    }
+    };
 });

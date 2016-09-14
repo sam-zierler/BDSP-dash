@@ -25,7 +25,7 @@ module.exports = {
         var conn = GetConnection();
         var sql = "INSERT INTO gc "
             + "(run_id, empl_id, name, rate) "
-            + "values (?, ?, ?, ?);" ;
+            + "values (?, ?, ?, ?);" ;qw
         conn.query(sql, [row.run_id, row.empl_id, row.name, row.rate], 
             function(err, data){
             ret(err, row);

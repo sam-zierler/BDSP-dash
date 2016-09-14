@@ -12,9 +12,9 @@ angular.module('app')
                        break;
                     }
                 }
-                for(var i = self.rows.length - 1; i >= 0; i--) {
-                  if(self.rows[i].start) {
-                      $scope.search.end = self.rows[i].start.substring(0, 10);
+                for(var j = self.rows.length - 1; j >= 0; j--) {
+                  if(self.rows[j].start) {
+                      $scope.search.end = self.rows[j].start.substring(0, 10);
                       break;
                   }
                 }
@@ -24,5 +24,4 @@ angular.module('app')
             }
         );
         $scope.calcSums = calcSums;
-
-    })
+    });

@@ -1,19 +1,30 @@
-angular.module('gmaps.directives', []).directive('gmap', function($parse) {
+angular.module('gmaps.directives', [])
+
+/** -------------------gmap directive---------------------
+ * 
+ * This directive displays a Google Map that displays the
+ * KML routes returned from a query of a Fusion Table. 
+ * The directive also has a height attribute, which does 
+ * exactly what you would expect.
+ * 
+ * ------------------------------------------------------*/
+
+.directive('gmap', function($parse) {
     var query;
     var height;
 
-    function gmaps_create(elem, mQuery) {
+    function createGmap(elem, mQuery) {
         google.maps.visualRefresh = true;
         var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) ||
             (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
         if (isMobile) {
-            var viewport = document.querySelector("meta[name=viewport]");
+            var viewport = document.querySelector('meta[name=viewport]');
             viewport.setAttribute('content', 'initial-scale=1.0, user-scalable=no');
         }
         var mapDiv = elem;
-        //mapDiv.style.width = isMobile ? '100%' : '500px';
 
         var map = new google.maps.Map(mapDiv, {
+            //centers the map on the city of Poughkeepsie
             center: new google.maps.LatLng(41.700174, -73.920869),
             zoom: 13,
             mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -21,7 +32,7 @@ angular.module('gmaps.directives', []).directive('gmap', function($parse) {
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
 
-        layer = new google.maps.FusionTablesLayer({
+        var layer = new google.maps.FusionTablesLayer({
             map: map,
             heatmap: {
                 enabled: false
@@ -32,24 +43,8 @@ angular.module('gmaps.directives', []).directive('gmap', function($parse) {
                 templateId: 4
             }
         });
-
-        if (isMobile) {
-            var legend = document.getElementById('googft-legend');
-            var legendOpenButton = document.getElementById('googft-legend-open');
-            var legendCloseButton = document.getElementById('googft-legend-close');
-            legend.style.display = 'none';
-            legendOpenButton.style.display = 'block';
-            legendCloseButton.style.display = 'block';
-            legendOpenButton.onclick = function() {
-                legend.style.display = 'block';
-                legendOpenButton.style.display = 'none';
-            }
-            legendCloseButton.onclick = function() {
-                legend.style.display = 'none';
-                legendOpenButton.style.display = 'block';
-            }
-        }
     }
+    
     return {
         restrict: 'E',
         replace: false,
@@ -63,15 +58,20 @@ angular.module('gmaps.directives', []).directive('gmap', function($parse) {
         },
         link: function(scope, element, attrs) {
             element[0].style.height = height;
-            element[0].style.display = "block";
-            gmaps_create(element[0], query);
+            
+            //needs to be a block element or browser ignores height attribute
+            element[0].style.display = 'block';
+            createGmap(element[0], query);
+            
+            //watch for a change in the value of query, necessary because
+            //of the async nature of the setting of query
             scope.$watch('query', function(newValue, oldValue) {
                 query = newValue;
                 //converting all data passed thru into an array
                 if (typeof query !== 'undefined') {
-                    gmaps_create(element[0], query);
+                    createGmap(element[0], query);
                 }
             });
         }
-    }
+    };
 });

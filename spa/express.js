@@ -24,6 +24,11 @@ app.get("/runs", function(req,res) {
         res.send(rows);
     })
 })
+.get("/runs/change/:id", function(req, res) {
+    runs.change(req.params.id, function(err, status) {
+        res.send(status);
+    })
+})
 .get("/employees", function(req,res) {
     employees.get(function(err,rows){
         res.send(rows);
