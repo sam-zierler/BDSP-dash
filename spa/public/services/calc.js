@@ -59,24 +59,32 @@ angular.module('app')
         }
     })
     .service('calcSums', function() {
+        /**
+         *   lifetime returns the total number of tons of garbage collected 
+         *   over the course of the current week
+         * 
+         *   @params run_table the run table from Fusiontables
+         */
         this.lifetime = function(run_table) {
             var weekStart = moment().startOf('week').format("YYYY-MM-DD hh:mm:ss");
             var total = 0;
             for (var i = run_table.length - 1; moment(run_table[i].start, "YYYY-MM-DD hh:mm:ss").isAfter(weekStart); i--) {
-                total += parseInt(run_table[i].tons);
+                total += Math.abs(parseInt(run_table[i].tons));
             }
             return total;
         }
         this.employeeCost = function(run) {
             var total = 0;
-            if(run.isAssigned) {
+            if(run.isAssigned && typeof run.assigned != 'undefined') {
                 run.assigned.forEach(function(d) {
                     total += Math.ceil(run.duration / 3600) * d.rate;
                 });
                 return total;
             }
-            else {
-                return 0;
+            else if(run.isAssigned && typeof run.assigned == 'undefined'){
+                console.error('run is assigned but property assigned is undefined');
+                throw Error('RunAssignmentException');
             }
+            return 0;
         }
     })

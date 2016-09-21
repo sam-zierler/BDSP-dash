@@ -11,7 +11,7 @@ angular.module('app')
                 newArr.push(rowObj);
             });
             return newArr;
-        }
+        };
     })
     .service('getFusionTable', function($q, $http, ftToArr) {
         this.empl_table = [];
@@ -20,7 +20,7 @@ angular.module('app')
 
         self.getUnassignedQuantity = function() {
             return self.unassignedQuantity;
-        }
+        };
 
         this.getAssignments = function(run_id) {
             return $q(function(resolve, reject) {
@@ -30,14 +30,15 @@ angular.module('app')
                     })
                     .error(function(data) {
                         reject("NOPE");
-                    })
-            })
-        }
+                    });
+            });
+        };
         this.runsTable = function() {
             if (typeof self.runs_promise === 'undefined') {
                 self.runs_promise = $q(function(resolve, reject) {
                     $http.get("/runs")
                         .success(function(data) {
+                            console.log(data);
                             self.runs_table = ftToArr.convert(data);
                             var localUnassignedQuantity = 0;
                             self.runs_table.forEach(function(d) {
@@ -52,13 +53,12 @@ angular.module('app')
                                 }
                                 d.duration_string = hr + ":" + min;
                                 var rID = "" + d.truckID + d.start;
-                                var result;
                                 var promise = self.getAssignments(rID);
                                 promise.then(
                                     function(res) {
                                         res.forEach(function(d) {
                                             d.id = d.empl_id;
-                                        })
+                                        });
                                         var result = res;
                                         d.assigned = result;
                                         if (d.assigned.length == 0) {
@@ -79,7 +79,7 @@ angular.module('app')
                 });
             }
             return self.runs_promise;
-        }
+        };
 
         this.emplTable = function() {
             if (typeof self.empl_promise === 'undefined') {
@@ -92,7 +92,7 @@ angular.module('app')
                 });
             }
             return self.empl_promise;
-        }
+        };
         
         this.forceRefresh = function() {
             this.runsTable().then(function(data) {
@@ -101,7 +101,7 @@ angular.module('app')
             this.emplTable().then(function(data) {
                 this.empl_table = data;
             });
-        }
+        };
 
         this.forceRefresh();
     });

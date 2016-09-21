@@ -52,7 +52,6 @@ angular.module('app')
                     console.log('Deleted');
                 });
         };
-
         function getAssignments(runId) {
             return $q(function(resolve, reject) {
                 $http.get('/assignments/' + runId)
