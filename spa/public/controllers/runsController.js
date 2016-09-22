@@ -3,6 +3,7 @@ angular.module('app')
         var self = this;
         $scope.search = {};
         var promise = getFusionTable.runsTable();
+        console.log("controller running again");
         promise.then(function(result) {
                 self.rows = result;
                 $scope.rows = self.rows;

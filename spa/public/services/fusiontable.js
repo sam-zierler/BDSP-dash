@@ -35,10 +35,10 @@ angular.module('app')
         };
         this.runsTable = function() {
             if (typeof self.runs_promise === 'undefined') {
+                console.log("getting new table");
                 self.runs_promise = $q(function(resolve, reject) {
                     $http.get("/runs")
                         .success(function(data) {
-                            console.log(data);
                             self.runs_table = ftToArr.convert(data);
                             var localUnassignedQuantity = 0;
                             self.runs_table.forEach(function(d) {
@@ -95,6 +95,8 @@ angular.module('app')
         };
         
         this.forceRefresh = function() {
+            this.runs_promise = undefined;
+            this.empl_promise = undefined;
             this.runsTable().then(function(data) {
                 this.runs_table = data;
             });
@@ -102,6 +104,5 @@ angular.module('app')
                 this.empl_table = data;
             });
         };
-
         this.forceRefresh();
     });

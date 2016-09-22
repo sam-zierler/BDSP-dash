@@ -1,10 +1,12 @@
 angular.module('app')
-    .controller('navController', function($scope, $http) {
-        var changeRun = function() {
-            $http.get('/runs/change/1JFf3z0WVkO0RJOfWNnPvUJ3KFwtHg42Rm-Y3z-LJ')
+    .controller('navController', function($scope, $http, getFusionTable) {
+        var self = this;
+        var changeTable = function(tableId) {
+            $http.get('/runs/change/' + tableId)
                 .success(function(data) {
                     console.log('SUCCESS');
+                    getFusionTable.forceRefresh();
                 });
         };
-        $scope.changeRun = changeRun;
+        $scope.changeTable = self.changeTable;
     });
