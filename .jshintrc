@@ -59,7 +59,8 @@
         "moment": false,
         "google": false,
         "JustGage": false,
-        "d3": false
-        
+        "d3": false,
+        "inject": false,
+        "assert": false
     }
 }

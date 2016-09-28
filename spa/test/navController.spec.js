@@ -11,7 +11,7 @@ describe('navController tests', function() {
             $controller('navController', { $scope: $scope });
         });
         it('should work', function() {
-
+            
         });
     });
 })

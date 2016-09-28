@@ -13,9 +13,9 @@ angular.module('app')
             return newArr;
         };
     })
-    .service('getFusionTable', function($q, $http, ftToArr) {
-        this.empl_table = [];
-        this.runs_table = [];
+    .service('fusionTables', function($q, $http, ftToArr) {
+        this.emplTable = [];
+        this.runsTable = [];
         var self = this;
 
         self.getUnassignedQuantity = function() {
@@ -33,22 +33,21 @@ angular.module('app')
                     });
             });
         };
-        this.runsTable = function() {
+        this.getRunsTable = function() {
             if (typeof self.runs_promise === 'undefined') {
-                console.log("getting new table");
                 self.runs_promise = $q(function(resolve, reject) {
                     $http.get("/runs")
                         .success(function(data) {
-                            self.runs_table = ftToArr.convert(data);
+                            self.runsTable = ftToArr.convert(data);
                             var localUnassignedQuantity = 0;
-                            self.runs_table.forEach(function(d) {
+                            self.runsTable.forEach(function(d) {
                                 d.duration = (moment(d.end).valueOf() - moment(d.start).valueOf()) / 1000;
                                 var hr = parseInt(d.duration / 3600) + "";
-                                var min = Math.ceil((d.duration % 3600)/60) + "";
-                                if(hr.length < 2) {
+                                var min = Math.ceil((d.duration % 3600) / 60) + "";
+                                if (hr.length < 2) {
                                     hr = "0" + hr;
                                 }
-                                if(min.length < 2) {
+                                if (min.length < 2) {
                                     min = "0" + min;
                                 }
                                 d.duration_string = hr + ":" + min;
@@ -56,38 +55,44 @@ angular.module('app')
                                 var promise = self.getAssignments(rID);
                                 promise.then(
                                     function(res) {
-                                        res.forEach(function(d) {
-                                            d.id = d.empl_id;
-                                        });
-                                        var result = res;
-                                        d.assigned = result;
-                                        if (d.assigned.length == 0) {
-                                            d.isAssigned = false;
-                                            localUnassignedQuantity++;
-                                            self.unassignedQuantity = localUnassignedQuantity;
+                                        if (Array.isArray(res)) {
+                                            res.forEach(function(d) {
+                                                d.id = d.empl_id;
+                                            });
+                                            var result = res;
+                                            d.assigned = result;
+                                            if (d.assigned.length == 0) {
+                                                d.isAssigned = false;
+                                                localUnassignedQuantity++;
+                                                self.unassignedQuantity = localUnassignedQuantity;
+                                            }
+                                            else {
+                                                d.isAssigned = true;
+                                            }
                                         }
                                         else {
-                                            d.isAssigned = true;
+                                            throw(new Error('object received is not an array'));
                                         }
                                     },
                                     function(fail) {
                                         console.log("FAIL");
-                                    });
+                                    }
+                                );
                             });
-                            resolve(self.runs_table);
+                            resolve(self.runsTable);
                         });
                 });
             }
             return self.runs_promise;
         };
 
-        this.emplTable = function() {
+        this.getEmplTable = function() {
             if (typeof self.empl_promise === 'undefined') {
                 self.empl_promise = $q(function(resolve, reject) {
                     $http.get("/employees")
                         .success(function(data) {
-                            self.empl_table = ftToArr.convert(data);
-                            resolve(self.empl_table);
+                            self.emplTable = ftToArr.convert(data);
+                            resolve(self.emplTable);
                         });
                 });
             }
@@ -97,11 +102,11 @@ angular.module('app')
         this.forceRefresh = function() {
             this.runs_promise = undefined;
             this.empl_promise = undefined;
-            this.runsTable().then(function(data) {
-                this.runs_table = data;
+            this.getRunsTable().then(function(data) {
+                this.runsTable = data;
             });
-            this.emplTable().then(function(data) {
-                this.empl_table = data;
+            this.getEmplTable().then(function(data) {
+                this.emplTable = data;
             });
         };
         this.forceRefresh();

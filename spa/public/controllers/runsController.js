@@ -1,9 +1,8 @@
 angular.module('app')
-    .controller('runsController', function($scope, ftToArr, getFusionTable, calcSums) {
+    .controller('runsController', function($scope, ftToArr, fusionTables, calcSums) {
         var self = this;
         $scope.search = {};
-        var promise = getFusionTable.runsTable();
-        console.log("controller running again");
+        var promise = fusionTables.runsTable();
         promise.then(function(result) {
                 self.rows = result;
                 $scope.rows = self.rows;

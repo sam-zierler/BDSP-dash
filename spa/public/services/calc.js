@@ -15,7 +15,6 @@ angular.module('app')
                 }
             });
             for (var key in average) {
-                average[key] = (average[key] / numOfTerms[key]);
                 avgArray.push({
                     date: key,
                     value: average[key]
@@ -65,8 +64,9 @@ angular.module('app')
          * 
          *   @params run_table the run table from Fusiontables
          */
-        this.lifetime = function(run_table) {
-            var weekStart = moment().startOf('week').format("YYYY-MM-DD hh:mm:ss");
+        this.forInterval = function(run_table,start,end) {
+            var start = moment().startOf('week').format("YYYY-MM-DD hh:mm:ss");
+            
             var total = 0;
             for (var i = run_table.length - 1; moment(run_table[i].start, "YYYY-MM-DD hh:mm:ss").isAfter(weekStart); i--) {
                 total += Math.abs(parseInt(run_table[i].tons));
