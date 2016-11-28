@@ -127,19 +127,3 @@ describe('fusiontable.js tests', function() {
         });
     });
 });
-/*
-       describe('assignController test', function() {
-           var assignController;
-           var fusionTables = {
-            runsTable: function() { return run_table }
-           };
-           beforeEach(module('app'));
-           beforeEach(inject(function(_assignController_) {
-               assignController = _assignController_;
-           }));
-           it('should ', function() {
-               var controller = $controller('assignController', { $scope: $scope, fusionTables: fusionTables });
-               assert.equal($scope.showAssignedValue, true, "not workin");
-           });
-       });
-*/

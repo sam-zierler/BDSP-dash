@@ -29,6 +29,4 @@ angular.module('app', ['ngRoute', 'ui.select', 'angularUtils.directives.dirPagin
 				otherwise({
 					redirectTo: '/summary'
 				});
-				//$httpProvider.defaults.cache = true;
-
 			});

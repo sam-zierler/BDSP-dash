@@ -1,5 +1,13 @@
 angular.module('app')
+
+    /**
+     * calcAverages service contains methods to calculate various averages
+     * on data in a table
+    **/
     .service('calcAverages', function() {
+        /**
+         *  Computes the average on a daily basis for all of the rows in the table
+        **/
         this.dailyAverages = function(tbl) {
             var average = {};
             var avgArray = [];
@@ -22,6 +30,10 @@ angular.module('app')
             }
             return avgArray;
         }
+        
+        /**
+         * Gets the average for the week
+        **/
         this.weeklyAverages = function(tbl) {
             var average = {};
             var avgArray = [];
@@ -57,6 +69,10 @@ angular.module('app')
             return total / numOfTerms;
         }
     })
+    
+    /**
+     * 
+    **/
     .service('calcSums', function() {
         /**
          *   lifetime returns the total number of tons of garbage collected 
@@ -66,7 +82,6 @@ angular.module('app')
          */
         this.forInterval = function(run_table,start,end) {
             var start = moment().startOf('week').format("YYYY-MM-DD hh:mm:ss");
-            
             var total = 0;
             for (var i = run_table.length - 1; moment(run_table[i].start, "YYYY-MM-DD hh:mm:ss").isAfter(weekStart); i--) {
                 total += Math.abs(parseInt(run_table[i].tons));
