@@ -1,0 +1,8 @@
+<table class="table runs-table">
+  <tr>
+    <th *ngFor="let col of runstable.columns">{{col}}</th>
+  </tr>
+  <tr *ngFor="let row of runstable.rows">
+    <td *ngFor="let cell of row">{{cell}}</td>
+  </tr> 
+</table>

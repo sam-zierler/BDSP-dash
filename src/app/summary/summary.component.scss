@@ -1,4 +1,54 @@
-.panel {
+h2 {
+    margin-top: 10px !important;
+}
+p {
+    margin-bottom: 10px !important;
+}
+
+div#totals-cards-row {
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+div#runs-table-row {
+    margin-left: 5px !important;
+    height: 450px;
+    overflow-y: scroll !important;
+}
+
+div.horizontal {
+    display: flex;
+    justify-content: center;
+}
+
+div.vertical {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div#summary-runs {
+    background-color: #d7ead5;
+}
+
+div#summary-tons {
+    background-color: #6a7a69
+}
+
+div#summary-miles {
+    background-color: #455643;
+}
+
+.summary-table-div {
     height: 450px;
     overflow-y: scroll;
+}
+
+div#truck-details-row {
+    margin-bottom: 20px;
+}
+
+div div div#details-extra-div {
+    display: none;
 }

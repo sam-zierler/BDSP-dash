@@ -1,6 +1,20 @@
-i {
-    padding-right: 5px;
+nav a #client-name {
+    margin-left: 10px;
 }
-nav {
-    background-color: #ecedee;
+
+nav div ul .nav-item.active {
+    background-color: #a8bbce;
+    border-radius: 25px;
+
+    a {
+        color: #333;
+    }
+}
+
+app-datepicker-popup {
+    margin-right: 15px !important;
+}
+
+i#logout {
+    font-size: 120%;
 }

@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DataService } from './data.service';
+import { RunsTableService } from './runs-table.service';
 
-describe('DataService', () => {
+describe('RunsTableService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: DataService = TestBed.get(DataService);
+    const service: RunsTableService = TestBed.get(RunsTableService);
     expect(service).toBeTruthy();
   });
 });

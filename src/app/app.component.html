@@ -1,14 +1,18 @@
-<div id="container">
+<div class="container-fluid">
+  
+  <!-- header nav -->
   <div class="row">
     <div class="col">
       <app-header></app-header>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-auto">
+  
+  <!-- sidebar and variable content -->
+  <div class="row" style="height: 100%;">
+    <div class="col-md-auto sidebar">
       <app-sidebar></app-sidebar>
     </div>
-    <div id="content">
+    <div class="col main-content">
       <router-outlet></router-outlet>
     </div>
   </div>

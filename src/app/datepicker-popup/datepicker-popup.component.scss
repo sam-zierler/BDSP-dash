@@ -1,0 +1,42 @@
+
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: slateblue;
+}
+.custom-day.range, .custom-day:hover {
+  background-color: slategray;
+  color: white;
+}
+.custom-day.faded {
+  background-color: slategray;
+  opacity: 0.5;
+}
+
+.form-group {   
+  min-width: 14rem;   
+    .input-group {
+      width: 100%;
+      align-items: center;
+    }
+}
+
+#dateRangePicker {
+    input.form-control {
+        //border: none;
+        min-width: 12.5em;
+        cursor: pointer;
+        background-color: transparent;
+    }
+
+    i.fas {
+        position: absolute;
+        right: 0;
+    }
+}
