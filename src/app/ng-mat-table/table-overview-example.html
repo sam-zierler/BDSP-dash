@@ -1,0 +1,64 @@
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table id="tableData" mat-table [dataSource]="dataSource" matSort>
+  
+    <!-- Truck ID Column -->
+    <ng-container matColumnDef="truckID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Truck ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.truckID}} </td>
+    </ng-container>
+
+    <!-- Start Column -->
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Start </th>
+      <td mat-cell *matCellDef="let row"> {{row.start}} </td>
+    </ng-container>
+
+    <!-- End Column -->
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> End </th>
+      <td mat-cell *matCellDef="let row"> {{row.end}} </td>
+    </ng-container>
+
+    <!-- Latitude Column -->
+    <ng-container matColumnDef="latitude">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Latitude </th>
+      <td mat-cell *matCellDef="let row"> {{row.latitude}} </td>
+    </ng-container>
+
+    <!-- Longitude Column -->
+    <ng-container matColumnDef="longitude">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Longitude </th>
+      <td mat-cell *matCellDef="let row"> {{row.longitude}} </td>
+    </ng-container>
+
+    <!-- Tons Column -->
+    <ng-container matColumnDef="tons" class="ton">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Tons </th>
+      <td mat-cell *matCellDef="let row"> {{row.tons}} </td>
+    </ng-container>
+
+    <!-- Distance Column -->
+    <ng-container matColumnDef="distance">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Distance </th>
+      <td mat-cell *matCellDef="let row"> {{row.distance}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-card *ngIf="isLoading" 
+    style="display: flex; justify-content: center; align-items: center">
+    <mat-progress-spinner 
+      color="primary" 
+      mode="indeterminate">
+    </mat-progress-spinner>
+  </mat-card>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+
