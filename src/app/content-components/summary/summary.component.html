@@ -1,3 +1,20 @@
+<div class="row">
+  <div class="col-2"></div>
+  <div class="col-8">
+    <app-selection></app-selection>
+  </div>
+  <div class="col-2"></div>
+</div>
+<div class="row" id="selection-row">
+  <div class="col"></div>
+  <div class="col-md-auto">
+    <button type="button" class="btn btn-light btn-lg" id="selection-slider" (click)="showSelectionComponent()">
+      <i class="fas fa-angle-down" id="selection-slider-arrow"></i>
+    </button>
+  </div>
+  <div class="col"></div>
+</div>
+
 <div class="row" id="totals-cards-row">
   
   <!-- Assigned Runs Card -->
@@ -52,7 +69,7 @@
           <div class="col-md-6">
                 <div class="card-block px-2">
                     <!-- {{ some total sum }}  -->
-                    <h2>95</h2>
+                    <h2>90</h2>
                     <p class="card-text">Total Miles</p>
                 </div>
           </div>

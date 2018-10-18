@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SummaryComponent } from './summary/summary.component';
-import { RunsComponent } from './runs/runs.component';
-import { AssignComponent } from './assign/assign.component';
-import { EmployeesComponent } from './employees/employees.component';
-import { StatisticsComponent } from './statistics/statistics.component';
+import { SummaryComponent } from './content-components/summary/summary.component';
+import { RunsComponent } from './content-components/runs/runs.component';
+import { AssignComponent } from './content-components/assign/assign.component';
+import { EmployeesComponent } from './content-components/employees/employees.component';
+import { StatisticsComponent } from './content-components/statistics/statistics.component';
 
 const routes: Routes = [
   {

@@ -5,6 +5,15 @@ p {
     margin-bottom: 10px !important;
 }
 
+app-selection {
+    display: none;
+}
+
+div div button i#selection-slider-arrow {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 div#totals-cards-row {
     margin-top: 20px;
     margin-right: 20px;

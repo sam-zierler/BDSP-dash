@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OpenExtraButtonComponent } from './open-extra-button.component';
+import { SelectionComponent } from './selection.component';
 
-describe('OpenExtraButtonComponent', () => {
-  let component: OpenExtraButtonComponent;
-  let fixture: ComponentFixture<OpenExtraButtonComponent>;
+describe('SelectionComponent', () => {
+  let component: SelectionComponent;
+  let fixture: ComponentFixture<SelectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OpenExtraButtonComponent ]
+      declarations: [ SelectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OpenExtraButtonComponent);
+    fixture = TestBed.createComponent(SelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

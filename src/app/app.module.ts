@@ -8,17 +8,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { SummaryComponent } from './summary/summary.component';
-import { RunsComponent } from './runs/runs.component';
-import { AssignComponent } from './assign/assign.component';
-import { EmployeesComponent } from './employees/employees.component';
-import { StatisticsComponent } from './statistics/statistics.component';
-import { TableComponent } from './table/table.component';
-import { DatepickerPopupComponent } from './datepicker-popup/datepicker-popup.component';
-import { LoginModalComponent } from './login-modal/login-modal.component';
+import { SummaryComponent } from './content-components/summary/summary.component';
+import { RunsComponent } from './content-components/runs/runs.component';
+import { AssignComponent } from './content-components/assign/assign.component';
+import { EmployeesComponent } from './content-components/employees/employees.component';
+import { StatisticsComponent } from './content-components/statistics/statistics.component';
+import { TableComponent } from './utility-components/table/table.component';
+import { LoginModalComponent } from './utility-components/login-modal/login-modal.component';
 import { TruckDetailsComponent } from './truck-details/truck-details.component';
 import { TruckDetailsExtraComponent } from './truck-details-extra/truck-details-extra.component';
-import { OpenExtraButtonComponent } from './open-extra-button/open-extra-button.component';
+import { SelectionComponent } from './selection/selection.component';
 
 @NgModule({
   declarations: [
@@ -31,11 +30,10 @@ import { OpenExtraButtonComponent } from './open-extra-button/open-extra-button.
     EmployeesComponent,
     StatisticsComponent,
     TableComponent,
-    DatepickerPopupComponent,
     LoginModalComponent,
     TruckDetailsComponent,
     TruckDetailsExtraComponent,
-    OpenExtraButtonComponent
+    SelectionComponent
   ],
   imports: [
     BrowserModule,

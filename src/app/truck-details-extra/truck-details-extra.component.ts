@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RunsTableService } from '../runs-table.service';
-import { RunsTable } from '../runs-table';
 import * as $ from 'jquery';
 
 @Component({
@@ -10,8 +8,6 @@ import * as $ from 'jquery';
 })
 export class TruckDetailsExtraComponent implements OnInit {
 
-  runstable =  new RunsTable();
-  truckdetail = new RunsTable();
   selectedId:  number;
   totaltons = 0;
   totalhours = 0;
@@ -19,7 +15,7 @@ export class TruckDetailsExtraComponent implements OnInit {
   totalleftoverminutes = 0;
 
 
-  constructor(private rtservice: RunsTableService) { }
+  constructor() { }
 
   toggle() {
     $("#details-extra-button").show();
@@ -27,30 +23,30 @@ export class TruckDetailsExtraComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rtservice.getTruckIds().subscribe(data => { 
-      this.runstable.rows = data.rows;
-    });
+    // this.rtservice.getTruckIds().subscribe(data => { 
+    //   this.runstable.rows = data.rows;
+    // });
   }
 
   getTotals() {
     this.totaltons = 0;
-    this.rtservice.getRunsDataById(this.selectedId).subscribe(data => {
-      this.truckdetail.kind = data.kind;
-      this.truckdetail.columns = data.columns;
-      this.truckdetail.rows = data.rows;
+    // this.rtservice.getTonsById(this.selectedId).subscribe(data => {
+    //   this.truckdetail.kind = data.kind;
+    //   this.truckdetail.columns = data.columns;
+    //   this.truckdetail.rows = data.rows;
 
-      this.doCalcs(this.truckdetail.rows);
+    //   this.doCalcs(this.truckdetail.rows);
       
-      this.rtservice.getStartEndById(this.selectedId).subscribe(data => {
-        this.getTimes(data.rows);
-      });
+    //   this.rtservice.getStartEndById(this.selectedId).subscribe(data => {
+    //     this.getTimes(data.rows);
+    //   });
   
       if (this.totalhours != 0) {
         this.tonsperhour = this.totaltons / this.totalhours;
         this.tonsperhour = Math.round(this.tonsperhour * 100) / 100;
       }
 
-    });
+    //});
   }
 
   //** calc totals/average */

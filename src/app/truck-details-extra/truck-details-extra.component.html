@@ -5,7 +5,7 @@
       <span class="form-group">
         <label for="truck-id-1"></label>
         <select class="form-control" id="truck-id-1" [(ngModel)]="selectedId" (ngModelChange)="getTotals()">
-          <option *ngFor="let id of runstable.rows">{{id}}</option>
+          <!-- <option *ngFor="let id of runstable.rows">{{id}}</option> -->
         </select>
       </span>
       <button type="button" class="btn btn-sm btn-close" (click)="toggle()">
@@ -13,9 +13,9 @@
       </button>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Total Tons <span style="float: right;">{{totaltons}}</span></li>
+      <!-- <li class="list-group-item">Total Tons <span style="float: right;">{{totaltons}}</span></li>
       <li class="list-group-item">Total Hours<span style="float: right;">{{totalhours}}</span></li>
       <li class="list-group-item">Average Tons
-        <br/>Per Hour<span style="float: right;">{{tonsperhour}}</span></li>
+        <br/>Per Hour<span style="float: right;">{{tonsperhour}}</span></li> -->
     </ul>
   </div>
