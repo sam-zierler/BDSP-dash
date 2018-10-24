@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import { global } from '@angular/core/src/util';
 import { Observable } from 'rxjs';
@@ -6,6 +7,10 @@ import * as $ from 'jquery';
 import { setRootDomAdapter } from '@angular/platform-browser/src/dom/dom_adapter';
 import {of,} from 'rxjs';
 import {delay} from 'rxjs/operators';
+import { DataService } from '../data.service';
+
+import { HttpClient } from '../HttpClient';
+import { FznTableResponse } from '../FznTableResponse';
 
 /** Global Variables. */
 var columns = new Array();
@@ -37,10 +42,20 @@ export class TableOverviewExample implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   isLoading = true
-  constructor() {
 
-    populate(); 
+  public tableResponse$: Observable<FznTableResponse>
+
+  constructor(private dataservice: DataService, public client: HttpClient) {
+
+    this.dataservice.fetchData().subscribe((data) => {
+      rows = data.rows;
+      columns = data.columns;
+    });
+    //populate(); 
             
+    console.log(rows);
+    console.log(columns);
+
     const users = Array.from({length: rows.length-1}, (_, k) => createData(k + 1));
 
     // Assign the data to the data source for the table to render
@@ -54,6 +69,9 @@ export class TableOverviewExample implements OnInit {
   }
   
   ngOnInit() {
+
+    this.tableResponse$ = this.client.fetchData();
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }

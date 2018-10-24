@@ -17,9 +17,9 @@ export class DataService {
 
   constructor() { }
 
-  fetchData() {
+  fetchData(): any {
 
-    let query = "SELECT 'truckID', 'start', 'end', 'run', 'latitude', 'longitude', 'geometry', 'tons', 'distance', 'notes' FROM " + this.tableId;
+    let query = "SELECT 'truckID', 'start', 'end', 'run', 'latitude', 'longitude', 'tons', 'distance', 'notes' FROM " + this.tableId;
     let encodedQuery = encodeURIComponent(query);
 
     // uncomment to confirm `query`
@@ -37,8 +37,11 @@ export class DataService {
     });
   }
 
+  // getWithHttp();
+
   onDataFetched(data) {
 
+    return data;
     // uncomment to confirm `data`
     // var rows = JSON.stringify(data);
     // console.log(rows);

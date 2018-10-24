@@ -17,7 +17,7 @@ const routes: Routes = [
     component: RunsComponent
   },
   {
-    path: 'assign',
+    path: 'map',
     component: AssignComponent
   },
   {

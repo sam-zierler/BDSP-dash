@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 
+import { HttpClient } from './HttpClient';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -143,7 +145,7 @@ export class DemoMaterialModule {}
     ReactiveFormsModule
   ],
   entryComponents: [TableOverviewExample],
-  providers: [],
+  providers: [HttpClient],
   bootstrap: [
     AppComponent,
     TableOverviewExample
