@@ -9,7 +9,11 @@ import { DataService } from './data.service';
 export class AppComponent implements OnInit {
   title = 'bdsp-dash';
 
-  constructor(private dataservice : DataService) {}
+  authorized: boolean;
+
+  constructor(private dataservice : DataService) {
+    this.authorized = false;
+  }
 
   ngOnInit() {
   }

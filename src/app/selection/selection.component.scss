@@ -1,0 +1,40 @@
+#table-select-row {
+    margin-top: 10px;
+}
+
+#submit-button {
+    margin-top: 5px;
+    float: right;
+}
+
+#data-fields-back-button, #fields-details-back-button, #date-fields-back-button {
+    float: right;
+}
+
+.small-text {
+    font-size: 0.7rem;
+}
+
+div div div.button-group {
+    padding-top: 10px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+caption {
+    color: black;
+    font-size: 1.15rem;
+    padding: 10px;
+    caption-side: top;
+}
+
+div div#data-table-inside-div {
+    height: 600px;
+    overflow-y: scroll;
+}
+
+table tr td {
+    font-size: 95%;
+}

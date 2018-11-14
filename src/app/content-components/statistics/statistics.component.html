@@ -1,3 +1,65 @@
-<p>
-  statistics works!
-</p>
+<div class="row">
+    <div class="col">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Select Table</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item" (click)="changeTable('Poughkeepsie Sanitation');">Poughkeepsie Sanitation</button>
+          <button class="dropdown-item">Table 2</button>
+          <button class="dropdown-item">Table 3</button>
+        </div>
+        <button class="btn btn-outline-success mr-2" (click)="getData();">Generate Table</button>
+        <button class="btn btn-outline-danger mr-2" (click)="clearPage();">Clear</button>
+      </div>
+  
+      <div ngbDropdown class="d-inline-block">
+      <ng-container *ngIf="addTable">
+        <button class="btn btn-outline-primary" id="dataSelect1" ngbDropdownToggle>{{x}}</button>
+        <div ngbDropdownMenu aria-labelledby="dataSelect1">
+          <button class="dropdown-item" *ngFor="let col of z" (click)="setX(col);">{{col}}</button>
+        </div>
+      </ng-container>
+      </div>
+  
+      <div ngbDropdown class="d-inline-block">
+      <ng-container *ngIf="addTable">
+        <button class="btn btn-outline-primary" id="dataSelect2" ngbDropdownToggle>{{y}}</button>
+        <div ngbDropdownMenu aria-labelledby="dataSelect2">
+          <button class="dropdown-item" *ngFor="let col of z" (click)="setY(col);">{{col}}</button>
+        </div>
+        <button class="btn btn-outline-success mr-2" (click)="getXYTable();">Generate X and Y Table</button>
+        <button class="btn btn-outline-success mr-2" (click)="addLineData(lineChart, dates, chartData1, chartData2);">Update Line Chart</button>
+        <button class="btn btn-outline-success mr-2" (click)="addBarData(barChart, dates, chartData1);">Update Bar Chart</button>
+        <button class="btn btn-outline-success mr-2" (click)="addPieData(pieChart, dates, chartData1);">Update Pie Chart</button>      
+      </ng-container>
+      </div>
+  
+    </div>
+</div>
+<ng-container *ngIf="addTable">
+    <table class="table runs-table">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{col}}</th>
+      </tr> 
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let row of rows">
+        <td *ngFor="let item of row">
+          {{ item }}
+        </td>
+      </tr>
+  </table> 
+</ng-container>
+
+<div>
+  <canvas id="line">{{ lineChart }}</canvas>
+</div>
+<div>
+  <canvas id="bar">{{ barChart }}</canvas>
+</div>
+<div>
+  <canvas id="pie">{{ pieChart }}</canvas>
+</div>
+<p>{{todaydate}}</p>
+  

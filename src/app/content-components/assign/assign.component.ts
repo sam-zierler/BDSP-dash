@@ -19,7 +19,7 @@ export class AssignComponent implements OnInit {
     var map = new google.maps.Map(document.getElementById('map-canvas'), {
       center: new google.maps.LatLng(41.7004, -73.9210),
       zoom: 15,
-      mapTypeId: google.maps.MapTypeId.HYBRID
+      mapTypeId: google.maps.MapTypeId.TERRAIN
     });
 
     var marker = new google.maps.Marker({ position: map.getCenter() });
@@ -34,7 +34,7 @@ export class AssignComponent implements OnInit {
       query: {
         select: 'geometry',
         from: '1ORV7xrjQo5nNRlMdY5NkxbG7wXKiNtkoRfdWu1wC',
-        where: "'truckID' = 92"
+        where: "'truckID' = 92 AND 'tons' > 8.0"
       },
       map: map,
       styles: [{

@@ -1,55 +1,148 @@
-<div class="row" style="margin-top: 10px">
-    <div class="col-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">By Date</h5>
-          <form>
-              <div class="form-group row">
-                <label for="inputStartDate" class="col-sm-4 col-form-label col-form-label-sm">Start Date:</label>
-                <div class="col-sm-8">
-                  <input type="date" class="form-control form-control-sm" id="inputStartDate" placeholder="mm-dd-yyyy">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputEndDate" class="col-sm-4 col-form-label col-form-label-sm">End Date:</label>
-                <div class="col-sm-8">
-                  <input type="date" class="form-control form-control-sm" id="inputEndDate">
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-sm-10">
-                  <button type="button" class="btn btn-secondary" (click)="todayClicked()">Today</button>
-                </div>
-              </div>
-            </form>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">By Truck ID(s)</h5>
-          <form id="selection-by-id-form">
-            <div class="form-group row">
-              <label for="inputTruckID" class="col-sm-auto col-form-label col-form-label-sm">Truck ID:</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm" id="inputTruckID">
-              </div>
-            </div>
-          </form>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="button" class="btn btn-info" id="addTruckBtn" (click)="addTruckRow()">+ Add Truck</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="row" id="table-select-row">
+  <div class="col">
+  </div>
+  
+  <div class="col" id="table-select-col">
+    <select class="custom-select" id="table-selector">
+      <option selected disabled>Select Table</option>
+      <option>Poughkeepsie Sanitation</option>
+    </select>
+    <button type="button" class="btn btn-success" (click)="fetchFields()" id="submit-button">Submit</button>  
+  </div>
+
+  <div class="col"></div>
 </div>
-<div class="row">
-  <div class="col-10"></div>
-  <div class="col-1">
-    <button type="button" class="btn btn-success" (click)="fetchData()">Fetch Data</button>
+
+<!-- Multiple select form, choosing data fields from table -->
+<div class="row" *ngIf="fetchSuccess" id="data-fields-row">
+  <div class="col">
+    <button type="button" class="btn btn-info" (click)="dataFieldsBack()" id="data-fields-back-button">Back</button>
+  </div>
+  <div class="col">
+    <h5>Select Fields from Table: <span class="small-text">{{selectedTable}}</span></h5>
+    <select class="custom-select" size="{{numFields}}" id="data-fields-select" multiple>
+      <option [disabled]="field === 'geometry'" *ngFor="let field of dataFields">{{field}}</option>
+    </select>
+  </div>
+  <div class="col">
+      <button type="button" class="btn btn-info" (click)="dataFieldsNext()" id="data-fields-next-button">Next</button>
+  </div>
+</div>
+
+<!-- Data fields details form, providing further information on chosen fields -->
+<div class="row" *ngIf="showDetails" id="fields-details-row">
+  <div class="col">
+    <button type="button" class="btn btn-info" (click)="fieldsDetailsBack()" id="fields-details-back-button">Back</button>
+  </div>
+  <div class="col">
+    <p>Select Unique Id Field</p>
+    <div class="form-row">
+      <div class="col">
+        <select class="custom-select" id="unique-id-select" (change)="onChange($event.target.value)">
+          <option *ngFor="let field of selectedFields" [ngValue]="field">{{field}}</option>
+        </select>
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" id="unique-id-input" placeholder="Enter Unique Id">
+      </div>
+    </div>
+    <div class="local-container">
+      <!-- generated with jquery -->
+    </div>
+  </div>
+  <div class="col">
+    <button type="button" class="btn btn-info" (click)="fieldsDetailsNext()" id="fields-details-next-button">Next</button>
+  </div>
+</div>
+
+<!-- Date datatype input pane -->
+<div class="row" id="date-fields-row" style="display: none;">
+  <div class="col">
+    <button type="button" class="btn btn-info" (click)="dateFieldsBack()" id="date-fields-back-button">Back</button>
+  </div>
+  <div class="col" id="datefields-container">
+    <!-- generated with jquery -->
+    <!-- {{datefieldsmarkup}} -->
+  </div>
+  <div class="col">
+    <button type="button" class="btn btn-success" id="form-submit-button" (click)="fetchData()">Fetch Data</button>
+  </div>
+</div>
+
+<div class="row" id="data-table" *ngIf="dataFetched">
+  <div class="col-2">
+    <div class="row button-group">
+      <button type="button" class="btn btn-warning" (click)="newSelection()">New Selection</button>
+    </div>
+    <div class="row button-group">
+      <button type="button" class="btn btn-info" (click)="showCharts()">Charts</button>
+    </div>
+    <div class="row button-group">
+      <button type="button" class="btn btn-info">Calcs</button>
+    </div>
+  </div>
+  <div class="col table-responsive" id="data-table-inside-div">
+    <table class="table table-hover table-bordered">
+      <caption>Results: WHERE {{uniqueIdField}} = {{uniqueIdValue}}</caption>
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns">{{col}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td *ngFor="let cell of row">{{cell}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- charts content -->
+  <div class="col" id="charts-content-div" style="display: none;">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-3">
+        <select class="custom-select" id="chart-type-select">
+          <option value="linegraph">Line Graph</option>
+          <option value="bargraph">Bar Graph</option>
+          <option value="piegraph">Pie Graph</option>
+        </select>
+      </div>
+      <div class="col-6"></div>
+      <div class="col">
+        <button type="button" class="btn btn-sm btn-dark" (click)="showTable()">Back to Table</button>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 10px;">
+      <div class="col-2"></div>
+      <div class="col-4 form-inline">
+        <label for="x-field-select" style="padding-right: 5px;">Select X Field</label>
+        <select class="custom-select" id="x-field-select">
+          <option *ngFor="let field of columns">{{field}}</option>
+        </select>
+      </div>
+        <div class="col-4 form-inline">
+          <label for="y-field-select" style="padding-right: 5px;">Select Y Field</label>
+          <select class="custom-select" id="y-field-select">
+            <option *ngFor="let field of columns">{{field}}</option>
+          </select>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 10px;">
+      <div class="col"></div>
+      <div class="col"></div>
+      <div class="col">
+        <button type="button" class="btn btn-success" (click)="makeChart()">Make Chart</button>
+      </div>
+    </div>
+    <canvas id="chart-canvas"></canvas>
+  </div>
+
+  <!-- calcs content -->
+  <div class="col" id="calcs-content-div" style="display: none;">
+
   </div>
   <div class="col-1"></div>
+
 </div>
+
+

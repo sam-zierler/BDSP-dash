@@ -11,17 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { SummaryComponent } from './content-components/summary/summary.component';
-import { RunsComponent } from './content-components/runs/runs.component';
 import { AssignComponent } from './content-components/assign/assign.component';
-import { EmployeesComponent } from './content-components/employees/employees.component';
 import { StatisticsComponent } from './content-components/statistics/statistics.component';
-import { TableComponent } from './utility-components/table/table.component';
-import { LoginModalComponent } from './utility-components/login-modal/login-modal.component';
-import { TruckDetailsComponent } from './truck-details/truck-details.component';
-import { TruckDetailsExtraComponent } from './truck-details-extra/truck-details-extra.component';
 import { SelectionComponent } from './selection/selection.component';
-import { TableOverviewExample } from './ng-mat-table/table-overview-example';
+import { LandingComponent } from './landing/landing.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import {
@@ -68,6 +61,22 @@ if (environment.production) {
   enableProdMode();
 }
 
+import {
+  GoogleApiModule,
+  GoogleApiService,
+  GoogleAuthService,
+  NgGapiClientConfig,
+  NG_GAPI_CONFIG,
+  GoogleApiConfig
+} from "ng-gapi";
+
+
+let gapiClientConfig: NgGapiClientConfig = {
+  client_id: "1034355473168-8eummsv5q3ja69r5b01cgr64kqo5fvi8.apps.googleusercontent.com",
+  discoveryDocs: [],
+  scope: "https://www.googleapis.com/auth/fusiontables"
+};
+
 @NgModule({
   exports: [
     CdkTableModule,
@@ -107,7 +116,8 @@ if (environment.production) {
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-  ]
+  ],
+  declarations: []
 })
 export class DemoMaterialModule {}
 @NgModule({
@@ -115,17 +125,10 @@ export class DemoMaterialModule {}
     AppComponent,
     HeaderComponent,
     SidebarComponent,
-    SummaryComponent,
-    RunsComponent,
     AssignComponent,
-    EmployeesComponent,
     StatisticsComponent,
-    TableComponent,
-    LoginModalComponent,
-    TruckDetailsComponent,
-    TruckDetailsExtraComponent,
     SelectionComponent,
-    TableOverviewExample
+    LandingComponent
   ],
   imports: [
     BrowserModule,
@@ -142,13 +145,16 @@ export class DemoMaterialModule {}
     HttpClientModule,
     DemoMaterialModule,
     MatNativeDateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig
+    }),
   ],
-  entryComponents: [TableOverviewExample],
+  entryComponents: [],
   providers: [HttpClient],
   bootstrap: [
-    AppComponent,
-    TableOverviewExample
+    AppComponent
   ]
 })
 export class AppModule { }
