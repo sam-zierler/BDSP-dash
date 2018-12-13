@@ -38,3 +38,7 @@ div div#data-table-inside-div {
 table tr td {
     font-size: 95%;
 }
+
+div div canvas#chart-canvas {
+    overflow-x: scroll;
+}

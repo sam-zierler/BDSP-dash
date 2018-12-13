@@ -24,11 +24,15 @@ export class StatisticsComponent implements OnInit {
   pieChart;
   colors = [];
   highlight = [];
+  date1; date2;
+  widgetField;
+  widgetData;
+  widgetBool = false;
 
-  constructor(private data: DataService) { }
+  constructor(private dataservice: DataService) { }
 
   ngOnInit() {
-    this.todaydate = this.data.showTodayDate(); 
+    this.todaydate = this.dataservice.showTodayDate(); 
     //this.changeTable("Poughkeepsie Sanitation");
 
     this.lineChart = new Chart('line', {
@@ -116,11 +120,11 @@ export class StatisticsComponent implements OnInit {
     });
   }
   changeTable(id) { 
-    this.data.getTableInfo(id);
+    this.dataservice.getTableInfo(id);
   }
   getData() {
-    this.rows = this.data.rows;
-    this.columns = this.z = this.data.columns;
+    this.rows = this.dataservice.rows;
+    this.columns = this.z = this.dataservice.columns;
     this.addTable = true;
   }
   clearPage() {
@@ -131,39 +135,39 @@ export class StatisticsComponent implements OnInit {
     this.x = i;
     this.boolx = true;
     if(this.boolx && this.booly == true) {
-      this.data.fetchXYData(this.x, this.y);
-      this.data.fetchDates();
-      this.data.fetchTons();
-      this.data.fetchDistance();
+      this.dataservice.fetchXYData(this.x, this.y);
+      this.dataservice.fetchDates();
+      this.dataservice.fetchTons();
+      this.dataservice.fetchDistance();
     }
   }
   setY(i) {
     this.y = i;
     this.booly = true;
     if(this.boolx && this.booly == true) {
-      this.data.fetchXYData(this.x, this.y);
-      this.data.fetchDates();
-      this.data.fetchTons();
-      this.data.fetchDistance();
+      this.dataservice.fetchXYData(this.x, this.y);
+      this.dataservice.fetchDates();
+      this.dataservice.fetchTons();
+      this.dataservice.fetchDistance();
     }
   }
   getXYTable() {
     if(this.boolx && this.booly == true) {
       //this.dates = this.data.endDate;
-      this.dates = this.data.endDate
-      this.chartData1 = this.data.tons;
-      this.chartData2 = this.data.distance;
+      this.dates = this.dataservice.endDate
+      this.chartData1 = this.dataservice.tons;
+      this.chartData2 = this.dataservice.distance;
       console.log(this.chartData1);
       console.log(this.chartData2);
       this.createColors();
       console.log(this.colors);
-      this.graphData = this.data.rows.map(Number);
-      this.rows = this.data.rows;
-      this.columns = this.data.columns;
+      this.graphData = this.dataservice.rows.map(Number);
+      this.rows = this.dataservice.rows;
+      this.columns = this.dataservice.columns;
       this.addTable = true;
       this.boolx = false;
       this.booly = false;
-      this.data.fetchData();
+      this.dataservice.fetchData();
       this.x = "Select X Value"; this.y = "Select Y Value";
       
     }else alert("Choose X and Y values!")
@@ -199,5 +203,10 @@ export class StatisticsComponent implements OnInit {
       this.colors[i] = 'rgb('+ r + ', ' + g + ', ' + b + ')';
       this.highlight[i] = 'rgb(' + (r+20) + ', ' + (g+20) + ', ' + (b+20) + ')';
   };
+  }
+
+  submit() {
+    this.dataservice.fetchWidgetData(this.widgetField, this.date1, this.date2);
+    this.widgetBool = true;
   }
 }

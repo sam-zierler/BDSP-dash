@@ -16,6 +16,9 @@ export class DataService {
   endDate: Date;
   tons;
   distance;
+  widgetData = new Array();
+  sum;
+  average = 0;
 
   constructor() { }
 
@@ -184,5 +187,49 @@ export class DataService {
     
   // console.log(this.columns);
 
+  }
+
+  fetchWidgetData(field, date1, date2): any {
+
+    let query = "SELECT '" + field + "' FROM " + this.tableId + " WHERE 'start' >= '" + date1 + " 00:00:00' AND 'end' <= '" + date2 + " 00:00:00'";
+    let encodedQuery = encodeURIComponent(query);
+
+    // uncomment to confirm `query`
+    // alert(query);
+
+    let url = ['https://www.googleapis.com/fusiontables/v2/query'];
+        url.push('?sql=' + encodedQuery);
+        url.push('&key=' + this.apikey);
+        url.push('&callback=?');
+    
+    $.ajax({
+      url: url.join(''),
+      dataType: 'jsonp',
+      success: this.onWidgetFetched
+    });
+  }
+  onWidgetFetched = (data) =>  {
+    // uncomment to confirm `data`
+    // var rows = JSON.stringify(data);
+    console.log(data);
+    var temp = data['rows'];
+    
+
+    for(var i = 0; i < temp.length; i++)
+    {
+      this.widgetData = this.widgetData.concat(temp[i]);
+    }
+    console.log(this.widgetData);
+   // console.log(this.columns);
+    this.sum = this.widgetData.reduce(add, 0);
+
+    function add(a, b) {
+      if(a == "NaN") a = 0;
+      if(b == "NaN") b = 0;
+      return a + b;
+    }
+    console.log(this.sum);
+    this.average = this.sum/this.widgetData.length;
+    console.log(this.sum);
   }
 }

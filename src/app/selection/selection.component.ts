@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import * as $ from 'jquery';
-import { Chart } from 'chart.js';
+import * as Chart from 'chart.js';
+import * as JustGage from 'justgage';
+
 /// <reference types="@types/gapi" />
 /// <reference types="@types/gapi.auth2" />
 
@@ -16,18 +18,8 @@ export class SelectionComponent implements OnInit {
   tableId = "1ORV7xrjQo5nNRlMdY5NkxbG7wXKiNtkoRfdWu1wC";
   apikey = "AIzaSyAPtyWPhurnjmBL9B8XRZUCbeMJbDhfnXY";
 
-  discoveryDocs = ["https://www.googleapis.com/fusiontables/v2/tables"];
-  clientId = "1034355473168-8eummsv5q3ja69r5b01cgr64kqo5fvi8.apps.googleusercontent.com"
-  scopes = "https://www.googleapis.com/auth/fusiontables";
-  
-  GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-
   signInButton = document.getElementById('sign-in-button');
   signOutButton = document.getElementById('sign-out-button');
-
-  GoogleAuth;
-
-  selectedTable: string;
 
   dataFields: Array<string>;
   numFields: number;
@@ -61,10 +53,17 @@ export class SelectionComponent implements OnInit {
   rows: Array<object>;
   columns: Array<string>;
 
+  linechart;
+
+  tonsFetched: boolean;
+  distanceFetched: boolean;
+
+  averageTonsPerDay
+  averageDistancePerDay
+  tonsPerDistance
 
   constructor() {
     this.tableNames = new Array<string>();
-    this.selectedTable = "";
     this.dataFields = new Array<string>();
     this.numFields = 0;
     this.fetchSuccess = false;
@@ -88,13 +87,16 @@ export class SelectionComponent implements OnInit {
     this.dataFetched = false;
     this.rows = new Array<object>();
     this.columns = new Array<string>();
-   }
+
+    this.tonsFetched = false;
+    this.distanceFetched = false;
+  }
 
   ngOnInit() {
   }
 
   fetchFields = () => {
-    // var tableId = $(selector value)
+    this.tableId = $("#table-id-input").val();
     let url = "https://www.googleapis.com/fusiontables/v2/tables/" + 
       this.tableId + "/columns?key=" + this.apikey;
     $.ajax({
@@ -107,7 +109,6 @@ export class SelectionComponent implements OnInit {
   onFieldsFetched = (data) => {
     
     this.numFields = data.items.length;
-    this.selectedTable = $("#table-selector option:selected").val();
 
     for (let i = 0; i < data.items.length; i++) {
         this.dataFields[i] = data.items[i].name;
@@ -145,6 +146,7 @@ export class SelectionComponent implements OnInit {
 
       this.fetchSuccess = false;
       this.showDetails = true;
+      //this.onChange(event);
     }
   }
 
@@ -161,15 +163,26 @@ export class SelectionComponent implements OnInit {
       this.uniqueId = $("#unique-id-input").val();
       if (this.uniqueId) {
         this.uniqueIdValue = this.uniqueId; // PARSING ...
-        for (let i = 0; i < this.numFieldsSelected - 1; i++) {
+        for (let i = 0; i < this.numFieldsSelected; i++) {
           var datatype = $("#fields-datatype" + i).val();
           var $element = $("#fields-datatype" + i);
           var $label = $("label[for='"+$element.attr('id')+"']");
-          this.selectedFields[i] = $label.text();
-          this.selectedFieldTypes[i] = $element.val();
-          if (datatype === 'date') {
-            this.datetypefields[counter] = $label.text();
-            counter = counter + 1;
+          if ($label.text() === this.uniqueIdField) {
+            console.log("skipping unique id");
+          } else {
+              this.selectedFields[i] = $label.text();
+              this.selectedFieldTypes[i] = $element.val();
+              if (datatype === 'date') {
+                this.datetypefields[counter] = $label.text();
+                counter = counter + 1;
+              }
+            }
+        }
+
+        for (let j = 0; j < this.selectedFields.length; j++) {
+          if (this.selectedFields[j] === undefined) {
+            this.selectedFields.splice(j, 1);
+            this.selectedFieldTypes.splice(j, 1);
           }
         }
 
@@ -212,7 +225,8 @@ export class SelectionComponent implements OnInit {
     //$("#datefields-container").html(markup);
   }
 
-  onChange(uniqueId) {
+  onChange(event) {
+    console.log("onChange running");
     var temp_array = [];
     var index = 0;
     $("#unique-id-select option:not(:selected)").each(function() {
@@ -271,6 +285,10 @@ export class SelectionComponent implements OnInit {
       }
     }
 
+    for (let a = 0; a < this.selectedFields.length; a++) {
+      console.log(this.selectedFields[a]);
+    }
+
     // SELECT <
     let fieldsString = "";
     for (let i = 0; i < this.selectedFields.length - 1; i++) {
@@ -319,13 +337,62 @@ export class SelectionComponent implements OnInit {
     $("#date-fields-row").hide();
 
     let startDateIndex, endDateIndex;
-
+    console.log(this.rows);
+    
     for (let i = 0; i < data.columns.length; i++) {
       this.columns[i] = data.columns[i];
     }
     for (let i = 0; i < data.rows.length; i++) {
+      // if (typeof(data.rows[i]) === 'number') {
+      //   this.rows[i] = this.round(data.rows[i], 2);
+      // }
       this.rows[i] = data.rows[i]
     }
+
+    // formatting the data based on `selectedFieldTypes[]`
+    // dataTypes = ["number", "string/text", "date", "boolean", "array"]
+      for (let i = 0; i < this.columns.length; i++) {
+        if (this.selectedFieldTypes[i] === "number") {
+          for (let j = 0; j < this.rows.length; j++) {
+            this.rows[j][i] = +(this.rows[j][i]);
+          }
+        } else if (this.selectedFieldTypes[i] === "string/text") {
+          for (let j = 0; j < this.rows.length; j++) {
+            this.rows[j][i] = "" + this.rows[j][i];
+          }
+        } else if (this.selectedFieldTypes[i] === "date") {
+          for (let j = 0; j < this.rows.length; j++) {
+            var temp;
+            if (typeof(this.rows[j][i]) === 'number') {
+              temp = this.rows[j][i].toString().substring(0, 10);
+            } else if (typeof(this.rows[j][i]) === 'string') {
+              temp = this.rows[j][i].substring(0, 10);
+            }
+            if (temp) {
+              this.rows[j][i] = temp;
+            }
+          }
+        } else if (this.selectedFieldTypes[i] === "boolean") {
+          for (let j = 0; j < this.rows.length; j++) {
+            var temp = this.rows[j][i].toLowerCase();
+            if (temp === "true") {
+              this.rows[j][i] = true;
+            } else if (temp === "false") {
+              this.rows[j][i] = false;
+            }
+          }
+        }
+      }
+
+  for (let i = 0; i < this.rows.length; i++) {
+    for (let j = 0; j < this.columns.length; j++) {
+      
+      
+      if (typeof(this.rows[i][j]) === 'number') {
+        this.rows[i][j] = Math.round(this.rows[i][j] * 100) / 100;
+      }
+    }
+  }
     this.dataFetched = true;
     console.log(data);
   }
@@ -336,7 +403,6 @@ export class SelectionComponent implements OnInit {
     $("#table-select-col").show();
 
     // reset variables
-    this.selectedTable = "";
     this.dataFields = new Array<string>();
     this.numFields = 0;
     this.fetchSuccess = false;
@@ -360,6 +426,13 @@ export class SelectionComponent implements OnInit {
     this.dataFetched = false;
     this.rows = new Array<object>();
     this.columns = new Array<string>();
+
+    this.averageDistancePerDay = 0;
+    this.averageTonsPerDay = 0;
+    this.tonsPerDistance = 0;
+
+    this.tonsFetched = false;
+    this.distanceFetched = false;
   }
   
   showTable = () => {
@@ -370,6 +443,7 @@ export class SelectionComponent implements OnInit {
   showCharts = () => {
     $("#data-table-inside-div").hide();
     $("#charts-content-div").show();
+    this.getWidgetData();
   }
 
   makeChart = () => {
@@ -394,8 +468,8 @@ export class SelectionComponent implements OnInit {
     }
 
     for (let i = 0; i < this.rows.length; i++) {
-      xData[i] = Number(this.rows[i][xFieldIndex]);
-      yData[i] = this.rows[i][yFieldIndex];
+      xData[i] = (this.rows[i][xFieldIndex]);
+      yData[i] = Number(this.rows[i][yFieldIndex]);
     }
 
     console.log(xData);
@@ -405,18 +479,21 @@ export class SelectionComponent implements OnInit {
     var context = canvas.getContext('2d');
 
     if (chartType === "linegraph") {
-      var linechart = new Chart(context, {
+      this.linechart = new Chart(canvas, {
         type: 'line',
         data: {
-          labels: [yData],
+          labels: xData,
           datasets: [{
-            data: [xData],
+            label: yField,
+            data: yData,
             fill: false,
+            borderColor: "blue",
             lineTension: 0.1
           }]
-        }
+        },
+        options: {}
       });
-      linechart.update();
+      this.linechart.update();
     } else if (chartType === "bargraph") {
 
     } else if (chartType === "piegraph") {
@@ -425,5 +502,59 @@ export class SelectionComponent implements OnInit {
       alert("...something wrong");
     }
   }
+
+  getWidgetData() {
+
+    var timeField, timeFieldIndex, daystring = "", daycount = 0;
+    var xAxisValues = [];
+
+    if (this.datetypefields) {
+      timeField = this.datetypefields[0];
+      timeFieldIndex = this.columns.indexOf(timeField);
+    } else {
+      alert("error");
+    }
+
+    for (let i = 0; i < this.rows.length; i++) {
+      xAxisValues[i] = this.rows[i][timeFieldIndex];      // day/time strings
+    }
+
+    if (this.selectedFields.includes("tons")) {
+      // average tons per day
+      var colIndex = this.columns.indexOf("tons");
+      var totaltons = 0;
+
+      for (let i = 0; i < this.rows.length; i++) {
+        totaltons += this.rows[i][colIndex];
+        if (daystring !== this.rows[i][timeFieldIndex]) {
+          daycount += 1;
+          daystring = this.rows[i][timeFieldIndex];
+        }
+      }
+      console.log("day count " + daycount);
+      this.averageTonsPerDay = (totaltons / daycount);
+      this.averageTonsPerDay = Math.round(this.averageTonsPerDay * 100) / 100;
+      this.tonsFetched = true;
+    }
+
+    if (this.selectedFields.includes("distance")) {
+      var colIndex = this.columns.indexOf("distance");
+      daystring = "";
+      var totaldistance = 0;
+
+      for (let i = 0; i < this.rows.length; i++) {
+        totaldistance += this.rows[i][colIndex];
+        if (daystring !== this.rows[i][timeFieldIndex]) {
+          daycount += 1;
+          daystring = this.rows[i][timeFieldIndex];
+        }
+      }
+      this.averageDistancePerDay = (totaldistance / daycount);
+      this.averageDistancePerDay = Math.round(this.averageDistancePerDay * 100) / 100;
+      this.distanceFetched = true;
+    }
+  }
+    
+    
 
 }

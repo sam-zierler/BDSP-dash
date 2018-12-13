@@ -1,1 +1,25 @@
 <div id="map-canvas" style="width:800px;height:500px"></div>
+
+<div>
+    Enter
+    <select class="form-control" [ngModel]="selectedField" (ngModelChange)="field1 = $event">
+        <option></option>
+        <option *ngFor="let col of this.data.columns">{{ col }}</option>
+    </select>
+    :
+      <input type="text" [ngModel] ="truckID" (ngModelChange)="truckID = $event">
+      {{truckID}}
+</div>
+
+<div>
+    Enter
+    <select class="form-control" [ngModel]="selectedDate" (ngModelChange)="field2 = $event">
+        <option></option>
+        <option *ngFor="let col of this.data.columns">{{ col }}</option>
+    </select>
+    :
+      <input type="date" [ngModel] ="dt" (ngModelChange)="dt = $event" [value]="date | date:'yyyy-MM-dd'">
+      {{dt| date:'yyyy-MM-dd'}}
+</div>
+
+<button (click)='submit()'>Submit</button>

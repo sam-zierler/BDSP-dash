@@ -3,10 +3,8 @@
   </div>
   
   <div class="col" id="table-select-col">
-    <select class="custom-select" id="table-selector">
-      <option selected disabled>Select Table</option>
-      <option>Poughkeepsie Sanitation</option>
-    </select>
+    <label for="table-id-input">Enter Table Id</label>
+    <input type="text" class="form-control" id="table-id-input" placeholder="Table Id">
     <button type="button" class="btn btn-success" (click)="fetchFields()" id="submit-button">Submit</button>  
   </div>
 
@@ -38,7 +36,7 @@
     <p>Select Unique Id Field</p>
     <div class="form-row">
       <div class="col">
-        <select class="custom-select" id="unique-id-select" (change)="onChange($event.target.value)">
+        <select class="custom-select" id="unique-id-select">
           <option *ngFor="let field of selectedFields" [ngValue]="field">{{field}}</option>
         </select>
       </div>
@@ -48,6 +46,17 @@
     </div>
     <div class="local-container">
       <!-- generated with jquery -->
+      <p style="margin-top: 1rem;">Specify Data Types</p>
+      <div class="form-row" style="margin-top: .5rem;" *ngFor="let field of selectedFields; let i = index">
+        <div class="col">
+          <label class="input-group-text" for="fields-datatype{{i}}">{{field}}</label>
+        </div>
+        <div class="col">
+          <select class="custom-select" id="fields-datatype{{i}}">
+            <option [disabled]="field === uniqueIdField" *ngFor="let type of dataTypes" [ngValue]="type">{{type}}</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
   <div class="col">
@@ -77,16 +86,17 @@
     <div class="row button-group">
       <button type="button" class="btn btn-info" (click)="showCharts()">Charts</button>
     </div>
-    <div class="row button-group">
+    <!-- <div class="row button-group">
       <button type="button" class="btn btn-info">Calcs</button>
-    </div>
+    </div> -->
   </div>
   <div class="col table-responsive" id="data-table-inside-div">
     <table class="table table-hover table-bordered">
       <caption>Results: WHERE {{uniqueIdField}} = {{uniqueIdValue}}</caption>
       <thead>
         <tr>
-          <th *ngFor="let col of columns">{{col}}</th>
+          <th *ngFor="let col of columns"><button type="button" class="btn btn-light">
+            {{col}}</button></th>
         </tr>
       </thead>
       <tbody>
@@ -96,6 +106,7 @@
       </tbody>
     </table>
   </div>
+
   <!-- charts content -->
   <div class="col" id="charts-content-div" style="display: none;">
     <div class="row">
@@ -134,7 +145,52 @@
         <button type="button" class="btn btn-success" (click)="makeChart()">Make Chart</button>
       </div>
     </div>
-    <canvas id="chart-canvas"></canvas>
+    <div class="row">
+      <canvas id="chart-canvas">{{linechart}}</canvas>
+    </div>
+
+    <div class="row" id="averages-rows">
+
+      <!-- average tons per day card -->
+      <div class="col">
+        <div class="card text-center" *ngIf="tonsFetched">
+          <div class="row no-gutters">
+            <!-- <div class="col-md-6 horizontal" id="averages-tons">
+              <div class="vertical">
+                  <img src="/src/assets/res/icons/truck-icon-wh.png" class="img-fluid" alt="" id="tons-truck-icon">
+              </div>
+            </div> -->
+            <div class="col-md-6">
+                  <div class="card-block px-2">
+                      <h2>{{averageTonsPerDay}}</h2>
+                      <p class="card-text">Avg. Tons / Day</p>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- average distance per day card -->
+      <div class="col">
+          <div class="card text-center" *ngIf="distanceFetched">
+            <div class="row no-gutters">
+              <!-- <div class="col-md-6 horizontal" id="average-distance">
+                <div class="vertical">
+                    <img src="/src/assets/res/icons/road-icon-wh.png" class="img-fluid" alt="" id="distance-road-icon">
+                </div>
+              </div> -->
+              <div class="col-md-6">
+                    <div class="card-block px-2">
+                        <h2>{{averageDistancePerDay}}</h2> 
+                        <p class="card-text">Avg. Distance / Day</p>
+                    </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+    </div>
+
   </div>
 
   <!-- calcs content -->

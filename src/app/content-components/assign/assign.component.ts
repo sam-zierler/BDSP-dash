@@ -1,16 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../data.service';
+import * as $ from 'jquery';
 /// <reference types="@types/googlemaps" />
 
 @Component({
   selector: 'app-assign',
   templateUrl: './assign.component.html',
-  styleUrls: ['./assign.component.scss']
+  styleUrls: ['./assign.component.scss'],
 })
 export class AssignComponent implements OnInit {
+  dt: Date;
+  truckID;
+  field1; field2;
+  constructor(private data: DataService) { 
 
-  constructor() { }
+  }
 
   ngOnInit() {
+    this.data.getTableInfo("Poughkeepsie Sanitation");
     this.initialize();
     //google.maps.event.addDomListener(window, 'load', this.initialize);
   }
@@ -19,7 +26,7 @@ export class AssignComponent implements OnInit {
     var map = new google.maps.Map(document.getElementById('map-canvas'), {
       center: new google.maps.LatLng(41.7004, -73.9210),
       zoom: 15,
-      mapTypeId: google.maps.MapTypeId.TERRAIN
+      mapTypeId: google.maps.MapTypeId.HYBRID
     });
 
     var marker = new google.maps.Marker({ position: map.getCenter() });
@@ -34,7 +41,7 @@ export class AssignComponent implements OnInit {
       query: {
         select: 'geometry',
         from: '1ORV7xrjQo5nNRlMdY5NkxbG7wXKiNtkoRfdWu1wC',
-        where: "'truckID' = 92 AND 'tons' > 8.0"
+        where: "'" + this.field1 + "' = " + this.truckID + " AND '" + this.field2 + "' LIKE '%" + this.dt + "%'"
       },
       map: map,
       styles: [{
@@ -43,6 +50,8 @@ export class AssignComponent implements OnInit {
         }
       }]
     });
+  }  
+  submit() {
+    this.initialize();
   }
-
 }

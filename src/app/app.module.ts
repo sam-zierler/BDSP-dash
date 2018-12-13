@@ -5,8 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 
-import { HttpClient } from './HttpClient';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -14,7 +12,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { AssignComponent } from './content-components/assign/assign.component';
 import { StatisticsComponent } from './content-components/statistics/statistics.component';
 import { SelectionComponent } from './selection/selection.component';
-import { LandingComponent } from './landing/landing.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import {
@@ -127,8 +124,7 @@ export class DemoMaterialModule {}
     SidebarComponent,
     AssignComponent,
     StatisticsComponent,
-    SelectionComponent,
-    LandingComponent
+    SelectionComponent
   ],
   imports: [
     BrowserModule,
@@ -152,7 +148,7 @@ export class DemoMaterialModule {}
     }),
   ],
   entryComponents: [],
-  providers: [HttpClient],
+  providers: [],
   bootstrap: [
     AppComponent
   ]
